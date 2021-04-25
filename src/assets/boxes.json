@@ -43,7 +43,7 @@
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "boxs.png",
+	"image": "boxes.png",
 	"format": "RGBA8888",
 	"size": {"w":200,"h":45},
 	"scale": "1",

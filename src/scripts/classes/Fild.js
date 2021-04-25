@@ -1,3 +1,4 @@
+import GroupBoxes from './../prefabs/GroupBoxes';
 import Box from './../prefabs/Box';
 export default class Fild {
     constructor(scene){
@@ -13,17 +14,24 @@ export default class Fild {
     }
     create(){
         this.createLayer();
+        this.createGroupBoxes();
         this.createBox();
     }
     createLayer(){
         this.fildmap.createLayer('tilemap',this.fildset,this.fildCoordX,this.fildCoordY);
     }
+    createGroupBoxes(){
+        this.groupboxes = new GroupBoxes(this.scene);
+    }
     createBox(){
         this.fildmap.findObject("tail",(tail)=>{
             let tailCoordX = tail.x + this.fildCoordX;
             let tailCoordY = tail.y + this.fildCoordY;
-
-            const  sprite = new Box (this.scene,tailCoordX,tailCoordY,'boxs',this.getRandomBoxName());
+            let visible = false;
+            if(tail.name.indexOf("tailBase") === -1){
+                visible = true;
+            }
+            const  sprite = new Box (this.scene,tailCoordX,tailCoordY,'boxes',this.getRandomBoxName(),visible);
 
         });
     }

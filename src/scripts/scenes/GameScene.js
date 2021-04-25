@@ -12,6 +12,7 @@ export default class GameScene extends Phaser.Scene{
     }
 
     create(){
+
         this.fild = new Fild(this);
 
 

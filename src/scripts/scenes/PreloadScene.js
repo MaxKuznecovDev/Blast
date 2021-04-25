@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 import LoadBar from '../classes/LoadBar';
 import fildPng from '../../assets/fild.png';
 import fildJson from '../../assets/fild.json';
-import boxPng from '../../assets/boxs.png';
-import boxJson from '../../assets/boxs.json';
+import boxPng from '../../assets/boxes.png';
+import boxJson from '../../assets/boxes.json';
 
 export default class PreloadScene extends Phaser.Scene{
     constructor(){
@@ -14,7 +14,7 @@ export default class PreloadScene extends Phaser.Scene{
         let loadBar = new LoadBar(this);
         this.load.spritesheet('tileset',fildPng,{frameWidth:50,frameHeight:56});
         this.load.tilemapTiledJSON('tilemap',fildJson);
-        this.load.atlas('boxs',boxPng, boxJson);
+        this.load.atlas('boxes',boxPng, boxJson);
     }
 
     create(){
