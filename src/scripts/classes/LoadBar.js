@@ -9,6 +9,6 @@ export default class LoadBar {
         this.scene.load.on('progress',this.showProgressBar,this)
     }
     showProgressBar(value){
-        this.progressBar.fillStyle('0xFFFFFF').fillRect(this.scene.game.config.width/2, this.scene.cameras.main.centerY,490*value,30);
+        this.progressBar.fillStyle('0x001e3b').fillRect(this.scene.game.config.width/2, this.scene.game.config.height/2,490*value,30);
     }
 }

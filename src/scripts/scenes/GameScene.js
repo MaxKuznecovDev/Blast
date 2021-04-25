@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import Fild from './../classes/Fild'
+
 export default class GameScene extends Phaser.Scene{
     constructor(){
         super("GameScene")
@@ -9,6 +11,6 @@ export default class GameScene extends Phaser.Scene{
     }
 
     create(){
-        console.log("create GameScene")
+        this.fild = new Fild(this);
     }
 }
