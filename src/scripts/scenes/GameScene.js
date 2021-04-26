@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import Fild from './../classes/Fild';
+import Field from '../classes/Field';
 
 
 export default class GameScene extends Phaser.Scene{
@@ -13,8 +13,9 @@ export default class GameScene extends Phaser.Scene{
 
     create(){
 
-        this.fild = new Fild(this);
+        this.field = new Field(this);
 
+      //  console.dir(this.field.groupboxes);
 
     }
 }

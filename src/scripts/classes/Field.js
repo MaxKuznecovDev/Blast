@@ -1,39 +1,40 @@
 import GroupBoxes from './../prefabs/GroupBoxes';
 import Box from './../prefabs/Box';
-export default class Fild {
+export default class Field {
     constructor(scene){
         this.scene = scene;
-        this.fildCoordX = this.scene.game.config.width/2-150;
-        this.fildCoordY = this.scene.game.config.height/2-168;
+        this.fieldCoordX = this.scene.game.config.width/2-150;
+        this.fieldCoordY = this.scene.game.config.height/2-168;
         this.init();
         this.create();
     }
     init(){
-        this.fildmap = this.scene.make.tilemap({key:'tilemap'});
-        this.fildset = this.fildmap.addTilesetImage("fild",'tileset',50,56);
+        this.fieldmap = this.scene.make.tilemap({key:'tilemap'});
+        this.fieldset = this.fieldmap.addTilesetImage("fild",'tileset',50,56);
     }
     create(){
         this.createLayer();
         this.createGroupBoxes();
-        this.createBox();
+        this.createBoxInGroup();
     }
     createLayer(){
-        this.fildmap.createLayer('tilemap',this.fildset,this.fildCoordX,this.fildCoordY);
+        this.fieldmap.createLayer('tilemap',this.fieldset,this.fieldCoordX,this.fieldCoordY);
     }
     createGroupBoxes(){
         this.groupboxes = new GroupBoxes(this.scene);
     }
-    createBox(){
-        this.fildmap.findObject("tail",(tail)=>{
-            let tailCoordX = tail.x + this.fildCoordX;
-            let tailCoordY = tail.y + this.fildCoordY;
+    createBoxInGroup(){
+        this.fieldmap.findObject("tail",(tail)=>{
+            let tailCoordX = tail.x + this.fieldCoordX;
+            let tailCoordY = tail.y + this.fieldCoordY;
             let visible = false;
             if(tail.name.indexOf("tailBase") === -1){
                 visible = true;
             }
-            const  sprite = new Box (this.scene,tailCoordX,tailCoordY,'boxes',this.getRandomBoxName(),visible);
+            this.groupboxes.createBox(this.scene,tailCoordX,tailCoordY,'boxes',this.getRandomBoxName(),visible,tail.name);
 
         });
+
     }
     getRandomBoxName() {
         let arrBoxName = ['blue', 'green', 'purple', 'red', 'yellow'];
@@ -43,4 +44,5 @@ export default class Fild {
         let rand = min + Math.random() * (max + 1 - min);
         return Math.floor(rand);
     }
+
 }

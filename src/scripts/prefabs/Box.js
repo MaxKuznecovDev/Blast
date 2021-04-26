@@ -1,10 +1,13 @@
+
 export default class Box extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, name,frame,visible) {
+    constructor(scene, x, y, name,frame,visible,coordOnField) {
         super(scene, x, y, name,frame);
         this.scene = scene;
         this.name = frame;
+        this.coordOnField = coordOnField;
         this.init(visible);
-        this.addEventHandler();
+        this.setInteractive();
+
     }
     init(visible) {
         this.scene.add.existing(this);
@@ -12,10 +15,6 @@ export default class Box extends Phaser.GameObjects.Sprite {
         this.body.enable = true;
         this.setVisible(visible);
     }
-    addEventHandler(){
-        this.setInteractive();
-        this.on('pointerdown',()=>{
-            console.log(this);
-        });
-    }
+
+
 }
