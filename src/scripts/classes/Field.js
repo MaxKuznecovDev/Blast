@@ -1,5 +1,6 @@
 import GroupBoxes from './../prefabs/GroupBoxes';
-import Box from './../prefabs/Box';
+import {getRandomBoxName} from './../libs/functions';
+
 export default class Field {
     constructor(scene){
         this.scene = scene;
@@ -27,22 +28,14 @@ export default class Field {
         this.fieldmap.findObject("tail",(tail)=>{
             let tailCoordX = tail.x + this.fieldCoordX;
             let tailCoordY = tail.y + this.fieldCoordY;
-            let visible = false;
+            let visible = true;
             if(tail.name.indexOf("tailBase") === -1){
                 visible = true;
             }
-            this.groupboxes.createBox(this.scene,tailCoordX,tailCoordY,'boxes',this.getRandomBoxName(),visible,tail.name);
+            this.groupboxes.createBox(this.scene,tailCoordX,tailCoordY,'boxes',getRandomBoxName(),visible,tail.name);
 
         });
-
-    }
-    getRandomBoxName() {
-        let arrBoxName = ['blue', 'green', 'purple', 'red', 'yellow'];
-        return arrBoxName[this.getRandomNumber(0,4)] + '_box';
-    }
-    getRandomNumber(min, max){
-        let rand = min + Math.random() * (max + 1 - min);
-        return Math.floor(rand);
+       console.dir( this.groupboxes.getChildren());
     }
 
 }

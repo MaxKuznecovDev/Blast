@@ -1,5 +1,5 @@
 
-export default class Box extends Phaser.GameObjects.Sprite {
+export default class Box extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, name,frame,visible,coordOnField) {
         super(scene, x, y, name,frame);
         this.scene = scene;
