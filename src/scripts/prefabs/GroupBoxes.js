@@ -1,5 +1,5 @@
 import Box from './Box';
-import {getRandomBoxName} from './../libs/functions';
+import {getRandomBoxName,getRandomNumber} from './../libs/functions';
 export default class GroupBoxes extends Phaser.GameObjects.Group {
 
     constructor(scene) {
@@ -11,8 +11,9 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
     createBox(scene, x, y, name,frame,visible,coordOnField){
         let box = new Box(scene, x, y, name,frame,visible,coordOnField);
         box.on('pointerdown',()=>{
-             this.findAroundBoxes(box);
-             this.groupBoxCore();
+              this.findAroundBoxes(box);
+              this.groupBoxCore();
+
         });
         this.add(box);
     }
@@ -78,8 +79,7 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
                           y: bottomBox.y
                       };
                       bottomBox.coordOnField = emptyBoxCoord.coordOnField;
-                      bottomBox.x = emptyBoxCoord.x;
-                      bottomBox.y = emptyBoxCoord.y;
+                      bottomBox.setPosition(emptyBoxCoord.x,emptyBoxCoord.y);
                       self.emptyBoxesCoordArr[i] = oldBottomBoxCoord;
 
                   } else if (self.isFooterBox(emptyBoxCoord.coordOnField)) {
@@ -91,8 +91,8 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
                           y: baseBox.y
                       };
                       baseBox.coordOnField = emptyBoxCoord.coordOnField;
-                      baseBox.x = emptyBoxCoord.x;
-                      baseBox.y = emptyBoxCoord.y;
+                      baseBox.setPosition(emptyBoxCoord.x,emptyBoxCoord.y);
+
                       self.emptyBoxesCoordArr[i] = oldBaseBoxCoord;
 
                       self.createBox(self.scene, oldBaseBoxCoord.x, oldBaseBoxCoord.y, 'boxes', getRandomBoxName(), true, oldBaseBoxCoord.coordOnField);
@@ -137,4 +137,46 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         return false;
     }
 
+    shuffleBoxes(){
+        let boxesArr = this.getChildren();
+        boxesArr.forEach((currentBox,i)=>{
+            let nextBox = boxesArr[getRandomNumber(0,41)];
+            let typeNextBox = this.getCoordInField(nextBox.coordOnField).type;
+            let typeCurrentBox = this.getCoordInField(currentBox.coordOnField).type;
+
+            if( typeCurrentBox === "tail" && typeNextBox === "tail"){
+                let currentBoxCoord = {
+                    coordOnField: currentBox.coordOnField,
+                    x: currentBox.x,
+                    y: currentBox.y
+                };
+                currentBox.coordOnField = nextBox.coordOnField;
+                currentBox.setPosition(nextBox.x,nextBox.y);
+
+                nextBox.coordOnField = currentBoxCoord.coordOnField;
+                nextBox.setPosition(currentBoxCoord.x ,currentBoxCoord.y);
+
+            }
+
+        });
+    this.checkPossibilityMoveGame();
+    }
+    checkPossibilityMoveGame(){
+        let boxesArr = this.getChildren();
+        let possibilityMoveGame = false;
+        boxesArr.forEach((targetBox)=>{
+            let typeTargetBox = this.getCoordInField(targetBox.coordOnField).type;
+
+            if(typeTargetBox == 'tail'){
+                let aroundBoxesArr = this.getAroundBoxesCoord(targetBox);
+                aroundBoxesArr.forEach((adjacentBox)=>{
+                    let nextBox = this.getMatching('coordOnField',adjacentBox)[0];
+                    if(nextBox && targetBox.name === nextBox.name){
+                            possibilityMoveGame = true;
+                    }
+                });
+            }
+        });
+         return possibilityMoveGame;
+    }
 }

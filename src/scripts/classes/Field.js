@@ -24,6 +24,14 @@ export default class Field {
     createGroupBoxes(){
         this.groupboxes = new GroupBoxes(this.scene);
     }
+    getGroupBoxes(){
+        if(this.groupboxes){
+            return this.groupboxes;
+        }else {
+            return false;
+        }
+
+    }
     createBoxInGroup(){
         this.fieldmap.findObject("tail",(tail)=>{
             let tailCoordX = tail.x + this.fieldCoordX;
