@@ -5,7 +5,8 @@ import fildJson from '../../assets/fild.json';
 import boxPng from '../../assets/boxes.png';
 import boxJson from '../../assets/boxes.json';
 import button1 from '../../assets/button1.png';
-import backGround from "../../assets/bg.png";
+import firePng from '../../assets/fire.png';
+import fireJson from '../../assets/fire.json';
 
 export default class PreloadScene extends Phaser.Scene{
     constructor(){
@@ -18,6 +19,7 @@ export default class PreloadScene extends Phaser.Scene{
         this.load.spritesheet('tileset',fildPng,{frameWidth:50,frameHeight:56});
         this.load.tilemapTiledJSON('tilemap',fildJson);
         this.load.atlas('boxes',boxPng, boxJson);
+        this.load.atlas('fire',firePng, fireJson);
     }
 
     create(){

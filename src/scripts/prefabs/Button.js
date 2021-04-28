@@ -1,9 +1,12 @@
 export default class Button extends Phaser.GameObjects.Sprite{
-    constructor(scene,x,y,name,frame,textButton) {
-        super(scene,x, y, name,frame);
-        this.scene = scene;
-        this.init(x,y,name);
-        this.createTextButton(x,y,textButton);
+    static generate(scene,x,y,name,frame,textButton){
+        return new Button({scene,x,y,name,frame,textButton});
+    }
+    constructor(data) {
+        super(data.scene,data.x, data.y, data.name,data.frame);
+        this.scene = data.scene;
+        this.init(data.x,data.y,data.name);
+        this.createTextButton(data.x,data.y,data.textButton);
     }
     init(x,y,name){
         this.setInteractive();

@@ -2,8 +2,11 @@ import GroupBoxes from './../prefabs/GroupBoxes';
 import {getRandomBoxName} from './../libs/functions';
 
 export default class Field {
-    constructor(scene){
-        this.scene = scene;
+    static generate(scene){
+        return new Field({scene});
+    }
+    constructor(data){
+        this.scene = data.scene;
         this.fieldCoordX = this.scene.game.config.width/2-150;
         this.fieldCoordY = this.scene.game.config.height/2-168;
         this.init();
