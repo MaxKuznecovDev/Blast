@@ -36,7 +36,7 @@ export default class Field {
         this.fieldmap.findObject("tail",(tail)=>{
             let tailCoordX = tail.x + this.fieldCoordX;
             let tailCoordY = tail.y + this.fieldCoordY;
-            let visible = true;
+            let visible = false;
             if(tail.name.indexOf("tailBase") === -1){
                 visible = true;
             }

@@ -68,6 +68,13 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         let self = this;
         setTimeout(()=> {
           function rearrangingBoxes() {
+              self.emptyBoxesCoordArr = self.emptyBoxesCoordArr.sort( (boxCoord, nextBoxCoord)=> {
+                  if (boxCoord.y > nextBoxCoord.y) return 1;
+                  if (boxCoord.y < nextBoxCoord.y) return -1;
+                  return 0;
+              });
+
+
               self.emptyBoxesCoordArr.forEach((emptyBoxCoord, i) => {
 
                   let bottomBox = self.getBottomBox(emptyBoxCoord.coordOnField);
@@ -79,7 +86,15 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
                           y: bottomBox.y
                       };
                       bottomBox.coordOnField = emptyBoxCoord.coordOnField;
-                      bottomBox.setPosition(emptyBoxCoord.x,emptyBoxCoord.y);
+
+                      self.scene.tweens.add({
+                          targets:bottomBox,
+                          x:emptyBoxCoord.x,
+                          y:emptyBoxCoord.y,
+                          ease:'Liner',
+                          duration:20
+                      });
+
                       self.emptyBoxesCoordArr[i] = oldBottomBoxCoord;
 
                   } else if (self.isFooterBox(emptyBoxCoord.coordOnField)) {
@@ -91,29 +106,43 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
                           y: baseBox.y
                       };
                       baseBox.coordOnField = emptyBoxCoord.coordOnField;
-                      baseBox.setPosition(emptyBoxCoord.x,emptyBoxCoord.y);
+                      baseBox.setVisible(true);
+
+                      self.scene.tweens.add({
+                          targets:baseBox,
+                          x:emptyBoxCoord.x,
+                          y:emptyBoxCoord.y,
+                          ease:'Liner',
+                          duration:20
+                      });
 
                       self.emptyBoxesCoordArr[i] = oldBaseBoxCoord;
 
-                      self.createBox(self.scene, oldBaseBoxCoord.x, oldBaseBoxCoord.y, 'boxes', getRandomBoxName(), true, oldBaseBoxCoord.coordOnField);
+                      self.createBox(self.scene, oldBaseBoxCoord.x, oldBaseBoxCoord.y, 'boxes', getRandomBoxName(), false, oldBaseBoxCoord.coordOnField);
 
                   }
               });
 
-              setTimeout(()=>{
-                  let startRearrangingBoxes = false;
-                  self.emptyBoxesCoordArr.forEach((emptyBoxCoord)=>{
-                      let typeBox = self.getCoordInField(emptyBoxCoord.coordOnField).type;
-                      if(typeBox == "tail") startRearrangingBoxes = true;
 
-                  });
-                  if(startRearrangingBoxes) rearrangingBoxes();
-              },500)
+                  setTimeout(()=>{
+                      let startRearrangingBoxes = false;
+                      self.emptyBoxesCoordArr.forEach((emptyBoxCoord)=>{
+                          let typeBox = self.getCoordInField(emptyBoxCoord.coordOnField).type;
+                          if(typeBox === "tail") startRearrangingBoxes = true;
+                      });
+                      if(startRearrangingBoxes) {
+                          rearrangingBoxes()
+                      }else{
+                          self.emptyBoxesCoordArr = [];
+                      };
+                  },200)
+
+
 
           }
             rearrangingBoxes();
 
-        },1000)
+        },200)
     }
 
     getBottomBox(coordOnField){
