@@ -12,16 +12,33 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
 
     createBox(scene, x, y, name,frame,visible,coordOnField){
         let box =  Box.generate(scene, x, y, name,frame,visible,coordOnField);
-        box.on('pointerdown',()=>{
-             this.findAroundBoxes(box);
-             if(this.minusStep) {
-                 this.scene.events.emit("minusStep");
-             }
-
-            this.groupBoxCore();
-        });
+        this.boxHandler(box);
         this.add(box);
     }
+    boxHandler(box){
+        box.on('pointerdown',()=>{
+            this.findAroundBoxes(box);
+            if(this.minusStep) {
+                this.scene.events.emit("minusStep");
+                this.deleteBoxesHandler();
+                this.groupBoxCore();
+
+            }
+        });
+    }
+    addBoxesHandler(){
+        let boxesArr = this.getChildren();
+        boxesArr.forEach((box)=>{
+            this.boxHandler(box)
+        })
+    }
+    deleteBoxesHandler(){
+        let boxesArr = this.getChildren();
+        boxesArr.forEach((box)=>{
+            box.off('pointerdown');
+        })
+    }
+
     findAroundBoxes(targetBox){
 
         let aroundBoxesArr = this.getAroundBoxesCoord(targetBox);
@@ -124,6 +141,7 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
                       if(startRearrangingBoxes) {
                           rearrangingBoxes()
                       }else{
+                          self.addBoxesHandler();
                           self.emptyBoxesCoordArr = [];
                       };
                   },200)
