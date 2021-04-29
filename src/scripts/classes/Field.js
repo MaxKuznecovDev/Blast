@@ -46,7 +46,6 @@ export default class Field {
             this.groupboxes.createBox(this.scene,tailCoordX,tailCoordY,'boxes',getRandomBoxName(),visible,tail.name);
 
         });
-       console.dir( this.groupboxes.getChildren());
     }
 
 }

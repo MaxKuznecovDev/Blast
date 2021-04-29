@@ -7,21 +7,25 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         super(scene);
         this.scene = scene;
         this.emptyBoxesCoordArr = [];
+        this.minusStep = false;
     }
 
     createBox(scene, x, y, name,frame,visible,coordOnField){
         let box =  Box.generate(scene, x, y, name,frame,visible,coordOnField);
         box.on('pointerdown',()=>{
-              this.findAroundBoxes(box);
-              this.groupBoxCore();
+             this.findAroundBoxes(box);
+             if(this.minusStep) {
+                 this.scene.events.emit("minusStep");
+             }
 
+            this.groupBoxCore();
         });
         this.add(box);
     }
     findAroundBoxes(targetBox){
 
         let aroundBoxesArr = this.getAroundBoxesCoord(targetBox);
-
+        let minusStep = false;
         aroundBoxesArr.forEach((adjacentBox)=>{
             let nextBox = this.getMatching('coordOnField',adjacentBox)[0];
             if(nextBox){
@@ -33,10 +37,16 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
 
                    this.addEmptyBoxesCoordInArr(nextBox);
                    Fire.generate(this.scene,nextBox.x,nextBox.y);
+
+
+                   this.scene.events.emit("addPoint",20);
+
                    this.remove(nextBox,true);
+                   minusStep = true;
                }
             }
         });
+        this.minusStep = minusStep;
     }
     getAroundBoxesCoord(targetBox){
         let initialCoord = this.getCoordInField(targetBox.coordOnField);
@@ -123,7 +133,7 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
           }
             rearrangingBoxes();
 
-        },200)
+        },0)
     }
 
     sortEmptyBoxesCoordArr(){
