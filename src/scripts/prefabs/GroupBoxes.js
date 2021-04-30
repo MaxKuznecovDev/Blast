@@ -19,9 +19,10 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         box.on('pointerdown',()=>{
             this.findAroundBoxes(box);
             if(this.minusStep) {
-                this.scene.events.emit("minusStep");
                 this.deleteBoxesHandler();
                 this.groupBoxCore();
+                let self = this;
+                setTimeout(()=>{self.scene.events.emit("minusStep");},1000)
 
             }
         });
@@ -76,13 +77,15 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
 
     }
     getCoordInField(coordOnField){
-        let result = coordOnField.matchAll(/(\w+)_x(\d+)_y(\d+)/g);
-        let dataArr = Array.from(result)[0];
-        return {
-            type:dataArr[1],
-            x:dataArr[2],
-            y:dataArr[3]
-        }
+
+            let result = coordOnField.matchAll(/(\w+)_x(\d+)_y(\d+)/g);
+            let dataArr = Array.from(result)[0];
+            return {
+                type: dataArr[1],
+                x: dataArr[2],
+                y: dataArr[3]
+            }
+
     }
     addEmptyBoxesCoordInArr(nextBox){
         this.emptyBoxesCoordArr.push({
@@ -98,38 +101,39 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         setTimeout(()=> {
           function rearrangingBoxes() {
               self.sortEmptyBoxesCoordArr();
-              self.emptyBoxesCoordArr.forEach((emptyBoxCoord, i) => {
 
-                  let bottomBox = self.getBottomBox(emptyBoxCoord.coordOnField);
+                  self.emptyBoxesCoordArr.forEach((emptyBoxCoord, i) => {
 
-                  if (bottomBox) {
-                      let oldBottomBoxCoord = {
-                          coordOnField: bottomBox.coordOnField,
-                          x: bottomBox.x,
-                          y: bottomBox.y
-                      };
-                      bottomBox.coordOnField = emptyBoxCoord.coordOnField;
-                      bottomBox.move(emptyBoxCoord.x,emptyBoxCoord.y);
-                      self.emptyBoxesCoordArr[i] = oldBottomBoxCoord;
+                      let bottomBox = self.getBottomBox(emptyBoxCoord.coordOnField);
 
-                  } else if (self.isFooterBox(emptyBoxCoord.coordOnField)) {
-                      let baseBox = self.getBaseBox(emptyBoxCoord.coordOnField);
+                      if (bottomBox) {
+                          let oldBottomBoxCoord = {
+                              coordOnField: bottomBox.coordOnField,
+                              x: bottomBox.x,
+                              y: bottomBox.y
+                          };
+                          bottomBox.coordOnField = emptyBoxCoord.coordOnField;
+                          bottomBox.move(emptyBoxCoord.x, emptyBoxCoord.y);
+                          self.emptyBoxesCoordArr[i] = oldBottomBoxCoord;
 
-                      let oldBaseBoxCoord = {
-                          coordOnField: baseBox.coordOnField,
-                          x: baseBox.x,
-                          y: baseBox.y
-                      };
-                      baseBox.coordOnField = emptyBoxCoord.coordOnField;
-                      baseBox.setVisible(true);
-                      baseBox.move(emptyBoxCoord.x,emptyBoxCoord.y);
+                      } else if (self.isFooterBox(emptyBoxCoord.coordOnField)) {
+                          let baseBox = self.getBaseBox(emptyBoxCoord.coordOnField);
 
-                      self.emptyBoxesCoordArr[i] = oldBaseBoxCoord;
+                          let oldBaseBoxCoord = {
+                              coordOnField: baseBox.coordOnField,
+                              x: baseBox.x,
+                              y: baseBox.y
+                          };
+                          baseBox.coordOnField = emptyBoxCoord.coordOnField;
+                          baseBox.setVisible(true);
+                          baseBox.move(emptyBoxCoord.x, emptyBoxCoord.y);
 
-                      self.createBox(self.scene, oldBaseBoxCoord.x, oldBaseBoxCoord.y, 'boxes', getRandomBoxName(), false, oldBaseBoxCoord.coordOnField);
+                          self.emptyBoxesCoordArr[i] = oldBaseBoxCoord;
 
-                  }
-              });
+                          self.createBox(self.scene, oldBaseBoxCoord.x, oldBaseBoxCoord.y, 'boxes', getRandomBoxName(), false, oldBaseBoxCoord.coordOnField);
+
+                      }
+                  });
 
 
                   setTimeout(()=>{
@@ -151,7 +155,7 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
           }
             rearrangingBoxes();
 
-        },0)
+        },200)
     }
 
     sortEmptyBoxesCoordArr(){
@@ -162,22 +166,27 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         });
     }
     getBottomBox(coordOnField){
-
-        let coordY = this.getCoordInField(coordOnField).y;
-        let bottomBoxCoordOnField = coordOnField.replace(`_y${coordY}`, `_y${coordY-1}`);
-        return this.getMatching('coordOnField',bottomBoxCoordOnField)[0];
-
+        if(coordOnField) {
+            let coordY = this.getCoordInField(coordOnField).y;
+            let bottomBoxCoordOnField = coordOnField.replace(`_y${coordY}`, `_y${coordY - 1}`);
+            return this.getMatching('coordOnField', bottomBoxCoordOnField)[0];
+        }
+        return false
     }
     getBaseBox(coordOnField){
-
-        let emptyBoxCoordInField = this.getCoordInField(coordOnField);
-        let baseBoxCoordOnField = coordOnField.replace(`tail_x${emptyBoxCoordInField.x}_y${emptyBoxCoordInField.y}`, `tailBase_x${emptyBoxCoordInField.x}_y0`);
-        return this.getMatching('coordOnField',baseBoxCoordOnField)[0];
+        if(coordOnField) {
+            let emptyBoxCoordInField = this.getCoordInField(coordOnField);
+            let baseBoxCoordOnField = coordOnField.replace(`tail_x${emptyBoxCoordInField.x}_y${emptyBoxCoordInField.y}`, `tailBase_x${emptyBoxCoordInField.x}_y0`);
+            return this.getMatching('coordOnField', baseBoxCoordOnField)[0];
+        }
+        return false
     }
     isFooterBox(coordOnField){
-        let coordY = this.getCoordInField(coordOnField).y;
-        if(coordY == 1){
-            return true;
+        if (coordOnField) {
+            let coordY = this.getCoordInField(coordOnField).y;
+            if (coordY == 1) {
+                return true;
+            }
         }
         return false;
     }
@@ -204,11 +213,11 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
             }
 
         });
-    this.checkPossibilityMoveGame();
+
     }
     checkPossibilityMoveGame(){
         let boxesArr = this.getChildren();
-        let possibilityMoveGame = false;
+        let possibilityMoveGame = true;
         boxesArr.forEach((targetBox)=>{
             let typeTargetBox = this.getCoordInField(targetBox.coordOnField).type;
 
@@ -217,7 +226,7 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
                 aroundBoxesArr.forEach((adjacentBox)=>{
                     let nextBox = this.getMatching('coordOnField',adjacentBox)[0];
                     if(nextBox && targetBox.name === nextBox.name){
-                            possibilityMoveGame = true;
+                            possibilityMoveGame = false;
                     }
                 });
             }

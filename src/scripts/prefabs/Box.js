@@ -24,7 +24,7 @@ export default class Box extends Phaser.Physics.Arcade.Sprite {
             x:x,
             y:y,
             ease:'Liner',
-            duration:100
+            duration:120
         });
     }
 

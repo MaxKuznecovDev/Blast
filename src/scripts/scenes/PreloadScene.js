@@ -8,6 +8,8 @@ import button1 from '../../assets/button1.png';
 import panelScore from '../../assets/panel_score.png';
 import firePng from '../../assets/fire.png';
 import fireJson from '../../assets/fire.json';
+import winPng from '../../assets/win.png'
+import gameOverPng from '../../assets/game_over.png'
 
 export default class PreloadScene extends Phaser.Scene{
     constructor(){
@@ -18,6 +20,8 @@ export default class PreloadScene extends Phaser.Scene{
         let loadBar = new LoadBar(this);
         this.load.image('button1',button1);
         this.load.image('panelScore',panelScore);
+        this.load.image('winPng',winPng);
+        this.load.image('gameOverPng',gameOverPng);
         this.load.spritesheet('tileset',fildPng,{frameWidth:50,frameHeight:56});
         this.load.tilemapTiledJSON('tilemap',fildJson);
         this.load.atlas('boxes',boxPng, boxJson);
@@ -25,6 +29,7 @@ export default class PreloadScene extends Phaser.Scene{
     }
 
     create(){
-        this.scene.start("GameScene")
+        this.scene.start("GameScene");
+
     }
 }

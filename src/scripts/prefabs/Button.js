@@ -5,12 +5,12 @@ export default class Button extends Phaser.GameObjects.Sprite{
     constructor(data) {
         super(data.scene,data.x, data.y, data.name,data.frame);
         this.scene = data.scene;
-        this.init(data.x,data.y,data.name);
+        this.init(data.x,data.y,data.name,data.frame);
         this.createText(data.x,data.y,data.textButton);
     }
-    init(x,y,name){
+    init(x,y,name,frame){
         this.setInteractive();
-        this.scene.add.sprite(x,y,name);
+        this.scene.add.sprite(x,y,name,frame);
     }
     createText(x,y,text){
         return this.scene.add.text( x - 25, y - 10, text, {fill: '#ffffff'});
@@ -28,4 +28,8 @@ export default class Button extends Phaser.GameObjects.Sprite{
             }
         });
     }
+    onHandler(event,callback,cont){
+        this.on(event,callback,cont);
+    }
+
 }
