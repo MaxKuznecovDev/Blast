@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import buttonConfig from "../config/buttonConfig";
 import Button from "../prefabs/Button";
 
 export default class WinScene extends Phaser.Scene {
@@ -14,7 +15,17 @@ export default class WinScene extends Phaser.Scene {
         this.add.text( 300, this.height - 100, 'Congratulations, you win!', {fill: '#7945D6',fontSize:'30px'});
     }
     create(){
-        this.resetButton = Button.generate(this,this.width-100,this.height-50,"button1",'resetButton','Reset');
+        this.createResetButton();
+    }
+    createResetButton(){
+        this.resetButton = Button.generate(
+            this,
+            buttonConfig.resetButton.x,
+            buttonConfig.resetButton.y,
+            buttonConfig.resetButton.name,
+            buttonConfig.resetButton.frame,
+            buttonConfig.resetButton.textButton);
+
         this.resetButton.onHandler('pointerdown',()=>{
             this.scene.start("GameScene");
         });

@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-
+import buttonConfig from "../config/buttonConfig";
+import scoreConfig from "../config/scoreConfig";
 import Field from '../classes/Field';
 import Button from '../prefabs/Button';
 import Score from "../prefabs/Score";
@@ -13,17 +14,42 @@ export default class GameScene extends Phaser.Scene{
     preload(){
         this.width = this.game.config.width;
         this.height = this.game.config.height;
-        this.add.sprite(0,0,"bg").setOrigin(0);
+        this.createBackground("bg");
     }
     create(){
-        this.field = Field.generate(this);
-        this.shuffleButton = Button.generate(this,this.width/2+300,this.height-222,"button1",'shuffleButton','Shake');
-        this.panelScore = Score.generate(this,this.width/2 + 300,this.height/2 - 50,"panelScore",'panelScore',30,2000, 0,3,this.field.getGroupBoxes());
-
-        this.shuffleButton.on('pointerdown',this.panelScore.shuffleHandler,this.panelScore);
-
-
-
+        this.createField();
+        this.createShuffleButton();
+        this.createPanelScore();
     }
 
+    createBackground(nameBgTexture){
+        this.add.sprite(0,0,nameBgTexture).setOrigin(0);
+    }
+    createField(){
+        this.field = Field.generate(this);
+    }
+    createShuffleButton(){
+        this.shuffleButton = Button.generate(
+            this,
+            buttonConfig.shuffleButton.x,
+            buttonConfig.shuffleButton.y,
+            buttonConfig.shuffleButton.name,
+            buttonConfig.shuffleButton.frame,
+            buttonConfig.shuffleButton.textButton);
+    }
+    createPanelScore(){
+        this.panelScore = Score.generate(
+            this,
+            scoreConfig.x,
+            scoreConfig.y,
+            scoreConfig.name,
+            scoreConfig.frame,
+            scoreConfig.stepCount,
+            scoreConfig.targetScore,
+            scoreConfig.playerScore,
+            scoreConfig.shuffleCount,
+            this.field.getGroupBoxes());
+
+        this.shuffleButton.on('pointerdown',this.panelScore.shuffleHandler,this.panelScore);
+    }
 }

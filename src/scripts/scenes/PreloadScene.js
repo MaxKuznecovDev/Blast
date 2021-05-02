@@ -20,34 +20,11 @@ export default class PreloadScene extends Phaser.Scene{
         this.createBackground("bg");
         let loadBar = new LoadBar(this);
 
-        let images = {
-            'button1':button1,
-            'panelScore':panelScore,
-            'winPng':winPng,
-            'gameOverPng':gameOverPng
-        }
-        let spritesheetArr = [
-            {
-                key: 'tileset',
-                img: fildPng,
-                config: {
-                    frameWidth:generalConfig.frameWidth,
-                    frameHeight:generalConfig.frameHeight
-                }
-            }
-        ];
-        let tilemaps = {
-            'tilemap':fildJson
-        };
-        let atlasArr = [
-            {key: 'boxes',img: boxPng, json: boxJson},
-            {key: 'fire',img: firePng, json: fireJson}
-        ];
-
-        this.loadImage(images);
-        this.loadSpritesheet(spritesheetArr);
-        this.loadTilemap(tilemaps);
-        this.loadAtlas(atlasArr);
+        this.setConfig();
+        this.loadImage();
+        this.loadSpritesheet();
+        this.loadTilemap();
+        this.loadAtlas();
 
     }
 
@@ -58,24 +35,50 @@ export default class PreloadScene extends Phaser.Scene{
         this.add.sprite(0,0,nameBgTexture).setOrigin(0);
     }
 
-    loadImage(images){
-        for (let key in images) {
-            this.load.image(key,images[key]);
+    setConfig(){
+        this.images = {
+            'button1':button1,
+            'panelScore':panelScore,
+            'winPng':winPng,
+            'gameOverPng':gameOverPng
+        }
+        this.spritesheetArr = [
+            {
+                key: 'tileset',
+                img: fildPng,
+                config: {
+                    frameWidth:generalConfig.frameWidth,
+                    frameHeight:generalConfig.frameHeight
+                }
+            }
+        ];
+        this.tilemaps = {
+            'tilemap':fildJson
+        };
+        this.atlasArr = [
+            {key: 'boxes',img: boxPng, json: boxJson},
+            {key: 'fire',img: firePng, json: fireJson}
+        ];
+    }
+
+    loadImage(){
+        for (let key in this.images) {
+            this.load.image(key,this.images[key]);
         }
     }
-    loadSpritesheet(spritesheetArr){
-        spritesheetArr.forEach((spritesheet)=>{
+    loadSpritesheet(){
+        this.spritesheetArr.forEach((spritesheet)=>{
             this.load.spritesheet(spritesheet.key,spritesheet.img,spritesheet.config);
         });
     }
-    loadTilemap(tilemaps){
-        for (let key in tilemaps) {
-            this.load.tilemapTiledJSON(key,tilemaps[key]);
+    loadTilemap(){
+        for (let key in this.tilemaps) {
+            this.load.tilemapTiledJSON(key,this.tilemaps[key]);
 
         }
     }
-    loadAtlas(atlasArr){
-        atlasArr.forEach((atlas)=>{
+    loadAtlas(){
+        this.atlasArr.forEach((atlas)=>{
             this.load.atlas(atlas.key,atlas.img, atlas.json);
         });
     }

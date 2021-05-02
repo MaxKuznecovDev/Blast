@@ -1,4 +1,5 @@
 import GroupBoxes from './../prefabs/GroupBoxes';
+import fieldConfig from "../config/fieldConfig";
 import {getRandomBoxName} from './../libs/functions';
 
 export default class Field {
@@ -7,14 +8,27 @@ export default class Field {
     }
     constructor(data){
         this.scene = data.scene;
-        this.fieldCoordX = this.scene.game.config.width/2-150;
-        this.fieldCoordY = this.scene.game.config.height/2-168;
+
+        this.setConfig();
         this.init();
         this.create();
     }
+
+    setConfig(){
+        this.fieldCoordX = fieldConfig.x;
+        this.fieldCoordY = fieldConfig.y;
+        this.tilemapConfig = {key:'tilemap'};
+        this.tilesetConfig = {
+            tilesetName:"fild",
+            key:'tileset',
+            tileWidth: fieldConfig.tileWidth,
+            tileHeight:fieldConfig.tileHeight
+        }
+    }
+
     init(){
-        this.fieldmap = this.scene.make.tilemap({key:'tilemap'});
-        this.fieldset = this.fieldmap.addTilesetImage("fild",'tileset',50,56);
+        this.fieldmap = this.scene.make.tilemap(this.tilemapConfig);
+        this.fieldset = this.fieldmap.addTilesetImage(this.tilesetConfig.tilesetName,this.tilesetConfig.key,this.tilesetConfig.tileWidth,this.tilesetConfig.tileHeight);
     }
     create(){
         this.createLayer();
@@ -44,7 +58,6 @@ export default class Field {
                 visible = true;
             }
             this.groupboxes.createBox(this.scene,tailCoordX,tailCoordY,'boxes',getRandomBoxName(),visible,tail.name);
-
         });
     }
 

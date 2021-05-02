@@ -219,16 +219,18 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         let boxesArr = this.getChildren();
         let possibilityMoveGame = true;
         boxesArr.forEach((targetBox)=>{
-            let typeTargetBox = this.getCoordInField(targetBox.coordOnField).type;
+            if(targetBox.coordOnField) {
+                let typeTargetBox = this.getCoordInField(targetBox.coordOnField).type;
 
-            if(typeTargetBox == 'tail'){
-                let aroundBoxesArr = this.getAroundBoxesCoord(targetBox);
-                aroundBoxesArr.forEach((adjacentBox)=>{
-                    let nextBox = this.getMatching('coordOnField',adjacentBox)[0];
-                    if(nextBox && targetBox.name === nextBox.name){
+                if (typeTargetBox == 'tail') {
+                    let aroundBoxesArr = this.getAroundBoxesCoord(targetBox);
+                    aroundBoxesArr.forEach((adjacentBox) => {
+                        let nextBox = this.getMatching('coordOnField', adjacentBox)[0];
+                        if (nextBox && targetBox.name === nextBox.name) {
                             possibilityMoveGame = false;
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
          return possibilityMoveGame;

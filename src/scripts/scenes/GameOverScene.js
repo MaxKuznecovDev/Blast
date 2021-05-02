@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import Button from "../prefabs/Button";
+import buttonConfig from "../config/buttonConfig";
 
 export default class GameOverScene extends Phaser.Scene {
     constructor() {
@@ -14,8 +15,18 @@ export default class GameOverScene extends Phaser.Scene {
         this.add.text( this.width/2 - 100, this.height/2 + 150, 'GAME OVER!', {fill: '#7945D6',fontSize:'30px'});
     }
     create(){
-        this.resetButton = Button.generate(this,this.width-100,this.height-50,"button1",'resetButton','Reset');
-         this.resetButton.onHandler('pointerdown',()=>{
+        this.createResetButton();
+    }
+    createResetButton(){
+        this.resetButton = Button.generate(
+            this,
+            buttonConfig.resetButton.x,
+            buttonConfig.resetButton.y,
+            buttonConfig.resetButton.name,
+            buttonConfig.resetButton.frame,
+            buttonConfig.resetButton.textButton);
+
+        this.resetButton.onHandler('pointerdown',()=>{
             this.scene.start("GameScene");
         });
     }
