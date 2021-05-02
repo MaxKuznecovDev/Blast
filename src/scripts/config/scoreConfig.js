@@ -7,5 +7,27 @@ export default {
     stepCount: 30,
     targetScore:2000,
     playerScore:0,
-    shuffleCount:3
+    shuffleCount:3,
+    point:20,
+
+    stepCountParam:{
+        styleText:{fill: '#ffffff',fontSize:'50px'},
+        x:generalConfig.baseWidth/2 + 270,
+        y:generalConfig.baseHeight/2 - 110,
+    },
+    targetScoreParam:{
+        styleText:{fill: '#ffffff'},
+        x:generalConfig.baseWidth/2 + 280,
+        y:generalConfig.baseHeight/2 - 200,
+    },
+    playerScoreParam:{
+        styleText:{fill: '#ffffff',fontSize:'30px'},
+        x:generalConfig.baseWidth/2 + 280,
+        y:generalConfig.baseHeight/2 + 10,
+    },
+    shuffleCountParam:{
+        styleText:{fill: '#ffffff',fontSize:'30px'},
+        x:generalConfig.baseWidth/2 + 280,
+        y:generalConfig.baseHeight/2 +40,
+    }
 }

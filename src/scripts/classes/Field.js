@@ -28,7 +28,12 @@ export default class Field {
 
     init(){
         this.fieldmap = this.scene.make.tilemap(this.tilemapConfig);
-        this.fieldset = this.fieldmap.addTilesetImage(this.tilesetConfig.tilesetName,this.tilesetConfig.key,this.tilesetConfig.tileWidth,this.tilesetConfig.tileHeight);
+        this.fieldset = this.fieldmap.addTilesetImage(
+            this.tilesetConfig.tilesetName,
+            this.tilesetConfig.key,
+            this.tilesetConfig.tileWidth,
+            this.tilesetConfig.tileHeight
+        );
     }
     create(){
         this.createLayer();
@@ -39,7 +44,7 @@ export default class Field {
         this.fieldmap.createLayer('tilemap',this.fieldset,this.fieldCoordX,this.fieldCoordY);
     }
     createGroupBoxes(){
-        this.groupboxes = new GroupBoxes(this.scene);
+        this.groupboxes = GroupBoxes.generate(this.scene);
     }
     getGroupBoxes(){
         if(this.groupboxes){

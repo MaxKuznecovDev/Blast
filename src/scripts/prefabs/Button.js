@@ -1,12 +1,13 @@
+import buttonConfig from "../config/buttonConfig";
 export default class Button extends Phaser.GameObjects.Sprite{
-    static generate(scene,x,y,name,frame,textButton){
-        return new Button({scene,x,y,name,frame,textButton});
+    static generate(scene){
+        return new Button({scene});
     }
     constructor(data) {
-        super(data.scene,data.x, data.y, data.name,data.frame);
+        super(data.scene,buttonConfig.x, buttonConfig.y, buttonConfig.name,buttonConfig.frame);
         this.scene = data.scene;
-        this.init(data.x,data.y,data.name,data.frame);
-        this.createText(data.x,data.y,data.textButton);
+        this.init(buttonConfig.x,buttonConfig.y,buttonConfig.name,buttonConfig.frame);
+        this.createText(buttonConfig.x,buttonConfig.y,buttonConfig.textButton);
     }
     init(x,y,name,frame){
         this.setInteractive();
