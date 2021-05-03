@@ -107,27 +107,12 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
             let bottomBox = this.getBottomBox(emptyBoxCoord.coordOnField);
 
             if (bottomBox) {
-                let oldBottomBoxCoord = {
-                    coordOnField: bottomBox.coordOnField,
-                    x: bottomBox.x,
-                    y: bottomBox.y
-                };
-                bottomBox.coordOnField = emptyBoxCoord.coordOnField;
-                bottomBox.move(emptyBoxCoord.x, emptyBoxCoord.y);
+                let oldBottomBoxCoord = this.moveBox(bottomBox,emptyBoxCoord);
                 this.emptyBoxesCoordArr[i] = oldBottomBoxCoord;
 
             } else if (this.isFooterBox(emptyBoxCoord.coordOnField)) {
                 let baseBox = this.getBaseBox(emptyBoxCoord.coordOnField);
-
-                let oldBaseBoxCoord = {
-                    coordOnField: baseBox.coordOnField,
-                    x: baseBox.x,
-                    y: baseBox.y
-                };
-                baseBox.coordOnField = emptyBoxCoord.coordOnField;
-                baseBox.setVisible(true);
-                baseBox.move(emptyBoxCoord.x, emptyBoxCoord.y);
-
+                let oldBaseBoxCoord = this.moveBox(baseBox,emptyBoxCoord,true);
                 this.emptyBoxesCoordArr[i] = oldBaseBoxCoord;
 
                 this.createBox(this.scene, oldBaseBoxCoord.x, oldBaseBoxCoord.y, 'boxes', getRandomBoxName(), false, oldBaseBoxCoord.coordOnField);
@@ -140,6 +125,22 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
             this.checkEmptyBoxesCoordArr();
         },200);
     }
+
+    moveBox(box,emptyBoxCoord,visible = false){
+        let oldBoxCoord = {
+            coordOnField: box.coordOnField,
+            x: box.x,
+            y: box.y
+        };
+        box.coordOnField = emptyBoxCoord.coordOnField;
+        if(visible){
+            box.setVisible(true);
+        }
+        box.move(emptyBoxCoord.x, emptyBoxCoord.y);
+        return oldBoxCoord;
+
+    }
+
     checkEmptyBoxesCoordArr(){
         let startRearrangingBoxes = false;
         this.emptyBoxesCoordArr.forEach((emptyBoxCoord)=>{
@@ -169,7 +170,6 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
             return this.getMatching('coordOnField', bottomBoxCoordOnField)[0];
     }
     getBaseBox(coordOnField){
-
             let emptyBoxCoordInField = this.getCoordInField(coordOnField);
             let baseBoxCoordOnField = coordOnField.replace(`tail_x${emptyBoxCoordInField.x}_y${emptyBoxCoordInField.y}`, `tailBase_x${emptyBoxCoordInField.x}_y0`);
             return this.getMatching('coordOnField', baseBoxCoordOnField)[0];

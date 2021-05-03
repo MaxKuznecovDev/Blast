@@ -1,6 +1,9 @@
 import Phaser from "phaser";
 import Button from "../prefabs/Button";
-import buttonConfig from "../config/buttonConfig";
+import gameOverSceneConfig from "../config/gameOverSceneConfig";
+import resetButtonConfig from "../config/resetButtonConfig";
+
+
 
 export default class GameOverScene extends Phaser.Scene {
     constructor() {
@@ -8,24 +11,34 @@ export default class GameOverScene extends Phaser.Scene {
 
     }
     preload(){
-        this.width = this.game.config.width;
-        this.height = this.game.config.height;
-        this.add.sprite(0,0,"bg").setOrigin(0);
-        this.add.sprite(this.width/2 + 10,this.height/2 - 100,"gameOverPng");
-        this.add.text( this.width/2 - 100, this.height/2 + 150, 'GAME OVER!', {fill: '#7945D6',fontSize:'30px'});
+        this.createBackground();
+        this.createImg();
+        this.createText();
+
     }
     create(){
         this.createResetButton();
     }
+    createBackground(){
+        this.add.sprite(0,0,gameOverSceneConfig.backgroundName).setOrigin(0);
+    }
+    createImg(){
+        this.add.sprite(
+            gameOverSceneConfig.imgX,
+            gameOverSceneConfig.imgY,
+            gameOverSceneConfig.imgName
+        );
+    }
+    createText(){
+        this.add.text(
+            gameOverSceneConfig.textX ,
+            gameOverSceneConfig.textY,
+            gameOverSceneConfig.text,
+            gameOverSceneConfig.textStyle
+        );
+    }
     createResetButton(){
-        this.resetButton = Button.generate(
-            this,
-            buttonConfig.resetButton.x,
-            buttonConfig.resetButton.y,
-            buttonConfig.resetButton.name,
-            buttonConfig.resetButton.frame,
-            buttonConfig.resetButton.textButton);
-
+        this.resetButton = Button.generate(this,resetButtonConfig);
         this.resetButton.onHandler('pointerdown',()=>{
             this.scene.start("GameScene");
         });

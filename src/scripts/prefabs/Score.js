@@ -4,7 +4,6 @@ export default class Score extends Phaser.GameObjects.Sprite {
         return new Score({scene, groupBoxes});
     }
 
-
     constructor(data) {
         super(data.scene,scoreConfig.x, scoreConfig.y, scoreConfig.name,scoreConfig.frame);
         this.scene = data.scene;
@@ -60,6 +59,12 @@ export default class Score extends Phaser.GameObjects.Sprite {
             scoreConfig.shuffleCountParam.styleText
         );
 
+        this.createText(
+            scoreConfig.shuffleText.x,
+            scoreConfig.shuffleText.y,
+            scoreConfig.shuffleText.text,
+            scoreConfig.shuffleText.styleText
+        );
     }
     addPointHandler(){
         this.scene.events.on('addPoint',(point)=>{

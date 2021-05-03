@@ -6,7 +6,13 @@ export default class Fire extends Phaser.GameObjects.Sprite{
         super(data.scene,data.x, data.y, 'fire','fire1');
         this.scene = data.scene;
         this.scene.add.existing(this);
+        this.createAnimation();
+        this.createHandler();
 
+        this.play('fire');
+
+    }
+    createAnimation(){
         const frames = this.scene.anims.generateFrameNames('fire',{
             prefix:'fire',
             start: 1,
@@ -19,10 +25,10 @@ export default class Fire extends Phaser.GameObjects.Sprite{
             frameRate:10,
             repeat:0,
         });
+    }
+    createHandler(){
         this.once('animationcomplete',()=>{
             this.destroy();
         });
-        this.play('fire');
-
     }
 }

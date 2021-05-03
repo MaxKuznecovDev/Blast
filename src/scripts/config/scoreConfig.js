@@ -27,7 +27,14 @@ export default {
     },
     shuffleCountParam:{
         styleText:{fill: '#ffffff',fontSize:'30px'},
-        x:generalConfig.baseWidth/2 + 280,
+        x:generalConfig.baseWidth/2 + 340,
         y:generalConfig.baseHeight/2 +40,
+    },
+    shuffleText:{
+        styleText:{fill: '#ffffff',fontSize:'30px'},
+        x:generalConfig.baseWidth/2 + 200,
+        y:generalConfig.baseHeight/2 +40,
+        text: "Shake:"
     }
+
 }

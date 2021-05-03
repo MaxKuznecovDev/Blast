@@ -15,8 +15,6 @@ export default class Field {
     }
 
     setConfig(){
-        this.fieldCoordX = fieldConfig.x;
-        this.fieldCoordY = fieldConfig.y;
         this.tilemapConfig = {key:'tilemap'};
         this.tilesetConfig = {
             tilesetName:"fild",
@@ -41,7 +39,7 @@ export default class Field {
         this.createBoxInGroup();
     }
     createLayer(){
-        this.fieldmap.createLayer('tilemap',this.fieldset,this.fieldCoordX,this.fieldCoordY);
+        this.fieldmap.createLayer('tilemap',this.fieldset,fieldConfig.x,fieldConfig.y);
     }
     createGroupBoxes(){
         this.groupboxes = GroupBoxes.generate(this.scene);
@@ -56,8 +54,8 @@ export default class Field {
     }
     createBoxInGroup(){
         this.fieldmap.findObject("tail",(tail)=>{
-            let tailCoordX = tail.x + this.fieldCoordX;
-            let tailCoordY = tail.y + this.fieldCoordY;
+            let tailCoordX = tail.x + fieldConfig.x;
+            let tailCoordY = tail.y + fieldConfig.y;
             let visible = false;
             if(tail.name.indexOf("tailBase") === -1){
                 visible = true;

@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import Field from '../classes/Field';
 import Button from '../prefabs/Button';
 import Score from "../prefabs/Score";
-import buttonConfig from "../config/buttonConfig";
+import shuffleButtonConfig from "../config/shuffleButtonConfig";
 
 
 export default class GameScene extends Phaser.Scene{
@@ -26,12 +26,7 @@ export default class GameScene extends Phaser.Scene{
         this.field = Field.generate(this);
     }
     createShuffleButton(){
-        this.shuffleButton = Button.generate(this,
-            buttonConfig.shuffleButton.x,
-            buttonConfig.shuffleButton.y,
-            buttonConfig.shuffleButton.name,
-            buttonConfig.shuffleButton.frame,
-            buttonConfig.shuffleButton.textButton);
+        this.shuffleButton = Button.generate(this, shuffleButtonConfig);
     }
     createPanelScore(){
         this.panelScore = Score.generate(this, this.field.getGroupBoxes());

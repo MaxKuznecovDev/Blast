@@ -1,6 +1,7 @@
 import Phaser from "phaser";
-import buttonConfig from "../config/buttonConfig";
 import Button from "../prefabs/Button";
+import winSceneConfig from "../config/winSceneConfig";
+import resetButtonConfig from "../config/resetButtonConfig";
 
 export default class WinScene extends Phaser.Scene {
     constructor() {
@@ -8,23 +9,33 @@ export default class WinScene extends Phaser.Scene {
 
     }
     preload(){
-        this.width = this.game.config.width;
-        this.height = this.game.config.height;
-        this.add.sprite(0,0,"bg").setOrigin(0);
-        this.add.sprite(this.width/2,this.height/2,"winPng");
-        this.add.text( 300, this.height - 100, 'Congratulations, you win!', {fill: '#7945D6',fontSize:'30px'});
+        this.createBackground();
+        this.createImg();
+        this.createText();
     }
     create(){
         this.createResetButton();
     }
+    createBackground(){
+        this.add.sprite(0,0,winSceneConfig.backgroundName).setOrigin(0);
+    }
+    createImg(){
+        this.add.sprite(
+            winSceneConfig.imgX,
+            winSceneConfig.imgY,
+            winSceneConfig.imgName
+        );
+    }
+    createText(){
+        this.add.text(
+            winSceneConfig.textX ,
+            winSceneConfig.textY,
+            winSceneConfig.text,
+            winSceneConfig.textStyle
+        );
+    }
     createResetButton(){
-        this.resetButton = Button.generate(
-            this,
-            buttonConfig.resetButton.x,
-            buttonConfig.resetButton.y,
-            buttonConfig.resetButton.name,
-            buttonConfig.resetButton.frame,
-            buttonConfig.resetButton.textButton);
+        this.resetButton = Button.generate(this,resetButtonConfig);
 
         this.resetButton.onHandler('pointerdown',()=>{
             this.scene.start("GameScene");
