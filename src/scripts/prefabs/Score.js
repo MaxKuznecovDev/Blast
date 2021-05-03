@@ -1,17 +1,17 @@
-import scoreConfig from "../config/scoreConfig";
 export default class Score extends Phaser.GameObjects.Sprite {
-    static generate(scene, groupBoxes) {
-        return new Score({scene, groupBoxes});
+    static generate(scene, groupBoxes,scoreConfig) {
+        return new Score(scene, groupBoxes,scoreConfig);
     }
 
-    constructor(data) {
-        super(data.scene,scoreConfig.x, scoreConfig.y, scoreConfig.name,scoreConfig.frame);
-        this.scene = data.scene;
-        this.groupBoxes = data.groupBoxes;
+    constructor(scene, groupBoxes,scoreConfig) {
+        super(scene,scoreConfig.x, scoreConfig.y, scoreConfig.name,scoreConfig.frame);
+        this.scene = scene;
+        this.groupBoxes = groupBoxes;
+        this.scoreConfig = scoreConfig;
         this.scene.add.sprite(scoreConfig.x,scoreConfig.y,scoreConfig.name,scoreConfig.frame);
 
 
-        this.setConfig(data);
+        this.setConfig();
         this.setScore(scoreConfig.stepCount,scoreConfig.targetScore,scoreConfig.playerScore,scoreConfig.shuffleCount);
 
 
@@ -21,54 +21,54 @@ export default class Score extends Phaser.GameObjects.Sprite {
 
     }
     setConfig(){
-        this.baseStepCount = scoreConfig.stepCount;
-        this.baseTargetScore = scoreConfig.targetScore;
-        this.baseX = scoreConfig.x;
-        this.baseY = scoreConfig.y;
+        this.baseStepCount = this.scoreConfig.stepCount;
+        this.baseTargetScore = this.scoreConfig.targetScore;
+        this.baseX = this.scoreConfig.x;
+        this.baseY = this.scoreConfig.y;
     }
     setScore(stepCount,targetScore,playerScore,shuffleCount){
 
         this.scoreGame = {stepCount,targetScore,playerScore,shuffleCount};
 
         this.stepCount = this.createText(
-            scoreConfig.stepCountParam.x,
-            scoreConfig.stepCountParam.y,
+            this.scoreConfig.stepCountParam.x,
+            this.scoreConfig.stepCountParam.y,
             stepCount,
-            scoreConfig.stepCountParam.styleText
+            this.scoreConfig.stepCountParam.styleText
         );
 
         this.targetScore = this.createText(
-            scoreConfig.targetScoreParam.x,
-            scoreConfig.targetScoreParam.y,
+            this.scoreConfig.targetScoreParam.x,
+            this.scoreConfig.targetScoreParam.y,
             targetScore,
-            scoreConfig.targetScoreParam.styleText
+            this.scoreConfig.targetScoreParam.styleText
         );
 
 
         this.playerScore = this.createText(
-            scoreConfig.playerScoreParam.x ,
-            scoreConfig.playerScoreParam.y,
+            this.scoreConfig.playerScoreParam.x ,
+            this.scoreConfig.playerScoreParam.y,
             playerScore,
-            scoreConfig.playerScoreParam.styleText
+            this.scoreConfig.playerScoreParam.styleText
         );
 
         this.shuffleCount = this.createText(
-            scoreConfig.shuffleCountParam.x,
-            scoreConfig.shuffleCountParam.y,
+            this.scoreConfig.shuffleCountParam.x,
+            this.scoreConfig.shuffleCountParam.y,
             shuffleCount,
-            scoreConfig.shuffleCountParam.styleText
+            this.scoreConfig.shuffleCountParam.styleText
         );
 
         this.createText(
-            scoreConfig.shuffleText.x,
-            scoreConfig.shuffleText.y,
-            scoreConfig.shuffleText.text,
-            scoreConfig.shuffleText.styleText
+            this.scoreConfig.shuffleText.x,
+            this.scoreConfig.shuffleText.y,
+            this.scoreConfig.shuffleText.text,
+            this.scoreConfig.shuffleText.styleText
         );
     }
     addPointHandler(){
-        this.scene.events.on('addPoint',(point)=>{
-            this.changePlayerScore(point);
+        this.scene.events.on('addPoint',()=>{
+            this.changePlayerScore(this.scoreConfig.point);
         },this);
     }
     addMinusStepHandler(){
@@ -85,20 +85,20 @@ export default class Score extends Phaser.GameObjects.Sprite {
         this.scoreGame.playerScore += point;
         this.playerScore.destroy();
         this.playerScore = this.createText(
-            scoreConfig.playerScoreParam.x,
-            scoreConfig.playerScoreParam.y,
+            this.scoreConfig.playerScoreParam.x,
+            this.scoreConfig.playerScoreParam.y,
             this.scoreGame.playerScore,
-            scoreConfig.playerScoreParam.styleText
+            this.scoreConfig.playerScoreParam.styleText
         );
     }
     changeStepCount(){
         this.scoreGame.stepCount--;
         this.stepCount.destroy();
         this.stepCount = this.createText(
-            scoreConfig.stepCountParam.x,
-            scoreConfig.stepCountParam.y,
+            this.scoreConfig.stepCountParam.x,
+            this.scoreConfig.stepCountParam.y,
             this.scoreGame.stepCount,
-            scoreConfig.stepCountParam.styleText
+            this.scoreConfig.stepCountParam.styleText
         );
     }
     checkScore(){
@@ -119,10 +119,10 @@ export default class Score extends Phaser.GameObjects.Sprite {
                 this.scoreGame.shuffleCount--;
                 this.shuffleCount.destroy();
                 this.shuffleCount = this.createText(
-                    scoreConfig.shuffleCountParam.x,
-                    scoreConfig.shuffleCountParam.y,
+                    this.scoreConfig.shuffleCountParam.x,
+                    this.scoreConfig.shuffleCountParam.y,
                     this.scoreGame.shuffleCount,
-                    scoreConfig.shuffleCountParam.styleText
+                    this.scoreConfig.shuffleCountParam.styleText
                 );
             }
 

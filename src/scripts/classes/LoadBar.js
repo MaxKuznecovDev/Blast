@@ -1,6 +1,7 @@
 export default class LoadBar {
-    constructor(scene){
+    constructor(scene,loadConfig){
         this.scene = scene;
+        this.loadConfig = loadConfig;
         this.progressBar = this.scene.add.graphics();
         this.setEvents();
     }
@@ -9,6 +10,6 @@ export default class LoadBar {
         this.scene.load.on('progress',this.showProgressBar,this)
     }
     showProgressBar(value){
-        this.progressBar.fillStyle('0x001e3b').fillRect(this.scene.game.config.width/2, this.scene.game.config.height/2,490*value,30);
+        this.progressBar.fillStyle(this.loadConfig.color).fillRect(this.loadConfig.x, this.loadConfig.y,490*value,30);
     }
 }

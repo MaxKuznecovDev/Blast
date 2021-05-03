@@ -4,6 +4,10 @@ export default {
     y: generalConfig.baseHeight/2-168,
 
     tileWidth:generalConfig.frameWidth,
-    tileHeight:generalConfig.frameHeight
-
+    tileHeight:generalConfig.frameHeight,
+    tilemap:{key:'tilemap'},
+    tileset:{
+        name:"fild",
+        key:'tileset'
+    }
 }

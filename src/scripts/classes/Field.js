@@ -1,36 +1,25 @@
 import GroupBoxes from './../prefabs/GroupBoxes';
-import fieldConfig from "../config/fieldConfig";
 import {getRandomBoxName} from './../libs/functions';
 
 export default class Field {
-    static generate(scene){
-        return new Field({scene});
+    static generate(scene,fieldConfig){
+        return new Field(scene,fieldConfig);
     }
-    constructor(data){
-        this.scene = data.scene;
+    constructor(scene,fieldConfig){
+        this.scene = scene;
+        this.fieldConfig = fieldConfig;
 
-        this.setConfig();
         this.init();
         this.create();
     }
 
-    setConfig(){
-        this.tilemapConfig = {key:'tilemap'};
-        this.tilesetConfig = {
-            tilesetName:"fild",
-            key:'tileset',
-            tileWidth: fieldConfig.tileWidth,
-            tileHeight:fieldConfig.tileHeight
-        }
-    }
-
     init(){
-        this.fieldmap = this.scene.make.tilemap(this.tilemapConfig);
+        this.fieldmap = this.scene.make.tilemap(this.fieldConfig.tilemap);
         this.fieldset = this.fieldmap.addTilesetImage(
-            this.tilesetConfig.tilesetName,
-            this.tilesetConfig.key,
-            this.tilesetConfig.tileWidth,
-            this.tilesetConfig.tileHeight
+            this.fieldConfig.tileset.name,
+            this.fieldConfig.tileset.key,
+            this.fieldConfig.tileWidth,
+            this.fieldConfig.tileHeight
         );
     }
     create(){
@@ -39,7 +28,7 @@ export default class Field {
         this.createBoxInGroup();
     }
     createLayer(){
-        this.fieldmap.createLayer('tilemap',this.fieldset,fieldConfig.x,fieldConfig.y);
+        this.fieldmap.createLayer('tilemap',this.fieldset,this.fieldConfig.x,this.fieldConfig.y);
     }
     createGroupBoxes(){
         this.groupboxes = GroupBoxes.generate(this.scene);
@@ -54,8 +43,8 @@ export default class Field {
     }
     createBoxInGroup(){
         this.fieldmap.findObject("tail",(tail)=>{
-            let tailCoordX = tail.x + fieldConfig.x;
-            let tailCoordY = tail.y + fieldConfig.y;
+            let tailCoordX = tail.x + this.fieldConfig.x;
+            let tailCoordY = tail.y + this.fieldConfig.y;
             let visible = false;
             if(tail.name.indexOf("tailBase") === -1){
                 visible = true;

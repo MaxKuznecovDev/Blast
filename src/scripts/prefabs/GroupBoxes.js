@@ -1,6 +1,5 @@
 import Box from './Box';
 import Fire from './Fire';
-import scoreConfig from "../config/scoreConfig";
 import {getRandomBoxName,getRandomNumber} from './../libs/functions';
 
 export default class GroupBoxes extends Phaser.GameObjects.Group {
@@ -43,7 +42,7 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
                     this.addEmptyBoxesCoordInArr(nextBox);
                     Fire.generate(this.scene,nextBox.x,nextBox.y);
 
-                    this.scene.events.emit("addPoint",scoreConfig.point);
+                    this.scene.events.emit("addPoint");
 
                     this.remove(nextBox,true);
                     minusStep = true;

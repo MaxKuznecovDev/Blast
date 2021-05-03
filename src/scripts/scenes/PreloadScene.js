@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import generalConfig from '../config/generalConfig';
+import loadConfig from "../config/loadConfig";
 import LoadBar from '../classes/LoadBar'
 import fildPng from '../../assets/fild.png';
 import fildJson from '../../assets/fild.json';
@@ -12,13 +13,14 @@ import fireJson from '../../assets/fire.json';
 import winPng from '../../assets/win.png'
 import gameOverPng from '../../assets/game_over.png'
 
+
 export default class PreloadScene extends Phaser.Scene{
     constructor(){
         super("PreloadScene")
     }
     preload(){
         this.createBackground("bg");
-        let loadBar = new LoadBar(this);
+        let loadBar = new LoadBar(this,loadConfig);
 
         this.setConfig();
         this.loadImage();
