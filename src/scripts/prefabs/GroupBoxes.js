@@ -20,9 +20,12 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
     boxHandler(box){
         box.on('pointerdown',()=>{
             if(this.removeAroundBoxes(box)) {
-                this.deleteHandler();
-                this.groupBoxCore();
-                setTimeout(()=>{this.scene.events.emit("minusStep");},2000)
+                let promise = new Promise((resolve) => {
+                    this.resolvePromiseBoxHandler = resolve;
+                    this.deleteHandler();
+                    this.groupBoxCore();
+                });
+                promise.then(()=>{this.scene.events.emit("minusStep")});
             }
         });
     }
@@ -153,8 +156,10 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         if(startRearrangingBoxes) {
             this.rearrangingBoxes()
         }else{
+
             this.addHandler();
             this.emptyBoxesCoordArr = [];
+            this.resolvePromiseBoxHandler();
         };
     }
 
