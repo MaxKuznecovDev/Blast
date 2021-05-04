@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'Comic';
+    src:url("../fonts/Comic.ttf");
+}
+body{
+    font-family: 'Comic';
+}

@@ -1,17 +1,22 @@
 import Phaser from 'phaser';
+import style from '../../assets/css/style.css';
 import generalConfig from '../config/generalConfig';
 import loadConfig from "../config/loadConfig";
 import LoadBar from '../classes/LoadBar'
-import fildPng from '../../assets/fild.png';
-import fildJson from '../../assets/fild.json';
-import boxPng from '../../assets/boxes.png';
-import boxJson from '../../assets/boxes.json';
-import button1 from '../../assets/button1.png';
-import panelScore from '../../assets/panel_score.png';
-import firePng from '../../assets/fire.png';
-import fireJson from '../../assets/fire.json';
-import winPng from '../../assets/win.png'
-import gameOverPng from '../../assets/game_over.png'
+
+import fildPng from '../../assets/img/fild.png';
+import fildJson from '../../assets/json/fild.json';
+
+import boxPng from '../../assets/img/boxes.png';
+import boxJson from '../../assets/json/boxes.json';
+
+import firePng from '../../assets/img/fire.png';
+import fireJson from '../../assets/json/fire.json';
+
+import button1 from '../../assets/img/button1.png';
+import panelScore from '../../assets/img/panel_score.png';
+import winPng from '../../assets/img/win.png'
+import gameOverPng from '../../assets/img/game_over.png'
 
 
 export default class PreloadScene extends Phaser.Scene{
@@ -27,6 +32,7 @@ export default class PreloadScene extends Phaser.Scene{
         this.loadSpritesheet();
         this.loadTilemap();
         this.loadAtlas();
+
 
     }
 

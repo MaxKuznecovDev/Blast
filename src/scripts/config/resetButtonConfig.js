@@ -8,6 +8,6 @@ export default {
         x:generalConfig.baseWidth-125,
         y:generalConfig.baseHeight-60,
         text:'Reset',
-        style:{fill: '#ffffff'}
+        style:{fill: '#ffffff',font: '16px Comic'}
     }
 }

@@ -11,7 +11,7 @@ export default {
     point:20,
 
     stepCountParam:{
-        styleText:{fill: '#ffffff',fontSize:'50px'},
+        styleText:{fill: '#ffffff',font: '50px Comic'},
         x:generalConfig.baseWidth/2 + 270,
         y:generalConfig.baseHeight/2 - 110,
     },
@@ -21,17 +21,17 @@ export default {
         y:generalConfig.baseHeight/2 - 200,
     },
     playerScoreParam:{
-        styleText:{fill: '#ffffff',fontSize:'30px'},
+        styleText:{fill: '#ffffff',font: '30px Comic'},
         x:generalConfig.baseWidth/2 + 280,
         y:generalConfig.baseHeight/2 + 10,
     },
     shuffleCountParam:{
-        styleText:{fill: '#ffffff',fontSize:'30px'},
-        x:generalConfig.baseWidth/2 + 340,
+        styleText:{fill: '#ffffff',font: '30px Comic'},
+        x:generalConfig.baseWidth/2 + 300,
         y:generalConfig.baseHeight/2 +40,
     },
     shuffleText:{
-        styleText:{fill: '#ffffff',fontSize:'30px'},
+        styleText:{fill: '#ffffff',font: '30px Comic'},
         x:generalConfig.baseWidth/2 + 200,
         y:generalConfig.baseHeight/2 +40,
         text: "Shake:"

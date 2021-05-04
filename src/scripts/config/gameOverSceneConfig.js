@@ -5,6 +5,6 @@ export default {
     text:'GAME OVER!',
     textX:412,
     textY: 510,
-    textStyle:{fill: '#7945D6',fontSize:'30px'},
+    textStyle:{fill: '#7945D6',font: '30px Comic'},
     backgroundName:"bg"
 }

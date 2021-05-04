@@ -8,6 +8,6 @@ export default {
         x:generalConfig.baseWidth/2+275,
         y:generalConfig.baseHeight-232,
         text:'Shake',
-        style:{fill: '#ffffff'}
+        style:{fill: '#ffffff',font: '16px Comic'}
     }
 }
