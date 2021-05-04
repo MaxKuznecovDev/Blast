@@ -16,8 +16,9 @@ export default class GameScene extends Phaser.Scene{
     }
     create(){
         this.createField();
-        this.createShuffleButton();
         this.createPanelScore();
+        this.createShuffleButton();
+
     }
 
     createBackground(nameBgTexture){
@@ -26,11 +27,18 @@ export default class GameScene extends Phaser.Scene{
     createField(){
         this.field = Field.generate(this,fieldConfig);
     }
-    createShuffleButton(){
-        this.shuffleButton = Button.generate(this, shuffleButtonConfig);
-    }
     createPanelScore(){
         this.panelScore = Score.generate(this, this.field.getGroupBoxes(),scoreConfig);
-        this.shuffleButton.on('pointerdown',this.panelScore.shuffleHandler,this.panelScore);
+
     }
+    createShuffleButton(){
+        this.shuffleButton = Button.generate(this, shuffleButtonConfig);
+        this.shuffleButton.onPointerdownHandler(this.panelScore.shuffleHandler,this.panelScore);
+        this.events.on('deleteShuffleHandler',this.shuffleButton.offPointerdownHandler,this.shuffleButton);
+        this.events.on('addShuffleHandler', ()=>{
+            this.shuffleButton.onPointerdownHandler(this.panelScore.shuffleHandler,this.panelScore);
+        }, this.shuffleButton);
+    }
+
+
 }

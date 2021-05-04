@@ -4,11 +4,11 @@ import {getRandomBoxName,getRandomNumber} from './../libs/functions';
 
 export default class GroupBoxes extends Phaser.GameObjects.Group {
     static generate(scene){
-        return new GroupBoxes({scene});
+        return new GroupBoxes(scene);
     }
-    constructor(data) {
-        super(data.scene);
-        this.scene = data.scene;
+    constructor(scene) {
+        super(scene);
+        this.scene = scene;
         this.emptyBoxesCoordArr = [];
     }
 
@@ -20,7 +20,7 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
     boxHandler(box){
         box.on('pointerdown',()=>{
             if(this.removeAroundBoxes(box)) {
-                this.deleteBoxesHandler();
+                this.deleteHandler();
                 this.groupBoxCore();
                 setTimeout(()=>{this.scene.events.emit("minusStep");},2000)
             }
@@ -81,17 +81,19 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         });
     }
 
-    addBoxesHandler(){
+    addHandler(){
         let boxesArr = this.getChildren();
         boxesArr.forEach((box)=>{
             this.boxHandler(box)
         })
+        this.scene.events.emit("addShuffleHandler");
     }
-    deleteBoxesHandler(){
+    deleteHandler(){
         let boxesArr = this.getChildren();
         boxesArr.forEach((box)=>{
             box.off('pointerdown');
-        })
+        });
+        this.scene.events.emit("deleteShuffleHandler");
     }
 
     groupBoxCore(){
@@ -151,7 +153,7 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         if(startRearrangingBoxes) {
             this.rearrangingBoxes()
         }else{
-            this.addBoxesHandler();
+            this.addHandler();
             this.emptyBoxesCoordArr = [];
         };
     }

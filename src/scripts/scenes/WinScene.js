@@ -37,7 +37,7 @@ export default class WinScene extends Phaser.Scene {
     createResetButton(){
         this.resetButton = Button.generate(this,resetButtonConfig);
 
-        this.resetButton.onHandler('pointerdown',()=>{
+        this.resetButton.onPointerdownHandler(()=>{
             this.scene.start("GameScene");
         });
     }
