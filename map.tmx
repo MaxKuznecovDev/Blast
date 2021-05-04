@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="6" height="7" tilewidth="50" tileheight="56" infinite="0" nextlayerid="3" nextobjectid="79">
+ <editorsettings>
+  <export target="../../../../OpenServer/domains/Blast/src/assets/fild.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" name="fild" tilewidth="50" tileheight="56" tilecount="36" columns="6">
+  <image source="src/assets/img/fild.png" width="301" height="336"/>
+ </tileset>
+ <layer id="1" name="tilemap" width="6" height="7">
+  <data encoding="csv">
+1,2,2,2,2,6,
+7,26,26,26,26,12,
+7,26,26,26,26,12,
+7,26,26,26,26,12,
+7,26,26,26,26,12,
+31,32,32,32,32,36,
+0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="tail">
+  <object id="1" name="tail_x0_y5" x="25" y="84">
+   <point/>
+  </object>
+  <object id="2" name="tail_x1_y5" x="75" y="84">
+   <point/>
+  </object>
+  <object id="3" name="tail_x2_y5" x="125" y="84">
+   <point/>
+  </object>
+  <object id="4" name="tail_x3_y5" x="175" y="84">
+   <point/>
+  </object>
+  <object id="5" name="tail_x4_y5" x="225" y="84">
+   <point/>
+  </object>
+  <object id="6" name="tail_x5_y5" x="275" y="84">
+   <point/>
+  </object>
+  <object id="42" name="tail_x0_y4" x="25" y="140">
+   <point/>
+  </object>
+  <object id="43" name="tail_x1_y4" x="75" y="140">
+   <point/>
+  </object>
+  <object id="44" name="tail_x2_y4" x="125" y="140">
+   <point/>
+  </object>
+  <object id="45" name="tail_x3_y4" x="175" y="140">
+   <point/>
+  </object>
+  <object id="46" name="tail_x4_y4" x="225" y="140">
+   <point/>
+  </object>
+  <object id="47" name="tail_x5_y4" x="275" y="140">
+   <point/>
+  </object>
+  <object id="48" name="tail_x5_y3" x="275" y="196">
+   <point/>
+  </object>
+  <object id="49" name="tail_x4_y3" x="225" y="196">
+   <point/>
+  </object>
+  <object id="50" name="tail_x3_y3" x="175" y="196">
+   <point/>
+  </object>
+  <object id="51" name="tail_x2_y3" x="125" y="196">
+   <point/>
+  </object>
+  <object id="52" name="tail_x1_y3" x="75" y="196">
+   <point/>
+  </object>
+  <object id="53" name="tail_x0_y3" x="25.2252" y="196">
+   <point/>
+  </object>
+  <object id="54" name="tail_x0_y2" x="25" y="252">
+   <point/>
+  </object>
+  <object id="55" name="tail_x1_y2" x="75" y="252">
+   <point/>
+  </object>
+  <object id="56" name="tail_x2_y2" x="125" y="252">
+   <point/>
+  </object>
+  <object id="57" name="tail_x3_y2" x="175" y="252">
+   <point/>
+  </object>
+  <object id="58" name="tail_x4_y2" x="225" y="252">
+   <point/>
+  </object>
+  <object id="59" name="tail_x5_y2" x="275" y="252">
+   <point/>
+  </object>
+  <object id="60" name="tail_x5_y1" x="275" y="308">
+   <point/>
+  </object>
+  <object id="61" name="tail_x4_y1" x="225" y="308">
+   <point/>
+  </object>
+  <object id="62" name="tail_x3_y1" x="175" y="308">
+   <point/>
+  </object>
+  <object id="63" name="tail_x2_y1" x="125" y="308">
+   <point/>
+  </object>
+  <object id="64" name="tail_x1_y1" x="75" y="308">
+   <point/>
+  </object>
+  <object id="65" name="tail_x0_y1" x="25" y="308">
+   <point/>
+  </object>
+  <object id="66" name="tailBase_x0_y0" x="25" y="364">
+   <point/>
+  </object>
+  <object id="67" name="tailBase_x1_y0" x="75" y="364">
+   <point/>
+  </object>
+  <object id="68" name="tailBase_x2_y0" x="125" y="364">
+   <point/>
+  </object>
+  <object id="69" name="tailBase_x3_y0" x="175" y="364">
+   <point/>
+  </object>
+  <object id="70" name="tailBase_x4_y0" x="225" y="364">
+   <point/>
+  </object>
+  <object id="71" name="tailBase_x5_y0" x="275" y="364">
+   <point/>
+  </object>
+  <object id="73" name="tail_x0_y6" x="25" y="28">
+   <point/>
+  </object>
+  <object id="74" name="tail_x1_y6" x="75" y="28">
+   <point/>
+  </object>
+  <object id="75" name="tail_x2_y6" x="125" y="28">
+   <point/>
+  </object>
+  <object id="76" name="tail_x3_y6" x="175" y="28">
+   <point/>
+  </object>
+  <object id="77" name="tail_x4_y6" x="225" y="28">
+   <point/>
+  </object>
+  <object id="78" name="tail_x5_y6" x="275" y="28">
+   <point/>
+  </object>
+ </objectgroup>
+</map>
