@@ -19,40 +19,55 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
     }
     boxHandler(box){
         box.on('pointerdown',()=>{
-            if(this.removeAroundBoxes(box)) {
-                let promise = new Promise((resolve) => {
-                    this.resolvePromiseBoxHandler = resolve;
-                    this.deleteHandler();
-                    this.groupBoxCore();
-                });
-                promise.then(()=>{this.scene.events.emit("minusStep")});
-            }
+            let promiseRemoveAroundBoxes = new Promise((resolve) => {
+                this.resolveRemoveAroundBoxes = resolve;
+                this.callbackArr = [];
+                this.removeAroundBoxes(box);
+
+            });
+            promiseRemoveAroundBoxes.then(()=>{
+                    let promiseRearrangingBoxes = new Promise((resolve) => {
+                        this.resolveEndRearrangingBoxes = resolve;
+                        this.deleteHandler();
+                        this.rearrangingBoxes();
+                    });
+                    promiseRearrangingBoxes.then(() => {
+                        while (this.checkImpossibilityMoveGame()) {
+                            this.scene.events.emit("shake");
+                        }
+                        this.scene.events.emit("minusStep");
+                    });
+            });
+
+
         });
     }
+
     removeAroundBoxes(targetBox){
 
-        let aroundBoxesArr = this.getAroundBoxesCoord(targetBox);
-        let minusStep = false;
-        aroundBoxesArr.forEach((adjacentBox)=>{
-            let nextBox = this.getMatching('coordOnField',adjacentBox)[0];
-            if(nextBox){
-                if( targetBox.name === nextBox.name){
-                    //I use this technique to avoid error:
-                    //Uncaught RangeError: Maximum call stack size exceeded
+            let aroundBoxesArr = this.getAroundBoxesCoord(targetBox);
+            aroundBoxesArr.forEach((adjacentBox) => {
+                let nextBox = this.getMatching('coordOnField', adjacentBox)[0];
+                if (nextBox) {
+                    if (targetBox.name === nextBox.name) {
+                        this.addEmptyBoxesCoordInArr(nextBox);
+                        Fire.generate(this.scene, nextBox.x, nextBox.y);
+                        this.scene.events.emit("addPoint");
+                        this.remove(nextBox, true);
 
-                    setTimeout(()=>{this.removeAroundBoxes(nextBox);},0);
+                        this.callbackArr.push(1);
+                        this.removeAroundBoxes(nextBox);
 
-                    this.addEmptyBoxesCoordInArr(nextBox);
-                    Fire.generate(this.scene,nextBox.x,nextBox.y);
+                        this.callbackArr.pop();
 
-                    this.scene.events.emit("addPoint");
-
-                    this.remove(nextBox,true);
-                    minusStep = true;
+                        if(this.callbackArr.length === 0){
+                            this.resolveRemoveAroundBoxes();
+                        }
+                    }
                 }
-            }
-        });
-        return minusStep;
+
+            });
+
     }
 
     getAroundBoxesCoord(targetBox){
@@ -99,38 +114,34 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         this.scene.events.emit("deleteShuffleHandler");
     }
 
-    groupBoxCore(){
-        setTimeout(()=> {
-            this.rearrangingBoxes();
-        },200)
-    }
     rearrangingBoxes(){
-        this.sortEmptyBoxesCoordArr();
-        this.emptyBoxesCoordArr.forEach((emptyBoxCoord, i) => {
+        let promise = new Promise((resolve) => {
+            this.sortEmptyBoxesCoordArr();
+            this.emptyBoxesCoordArr.forEach((emptyBoxCoord, i) => {
 
-            let bottomBox = this.getBottomBox(emptyBoxCoord.coordOnField);
+                let bottomBox = this.getBottomBox(emptyBoxCoord.coordOnField);
 
-            if (bottomBox) {
-                let oldBottomBoxCoord = this.moveBox(bottomBox,emptyBoxCoord);
-                this.emptyBoxesCoordArr[i] = oldBottomBoxCoord;
+                if (bottomBox) {
+                    let oldBottomBoxCoord = this.moveBox(bottomBox, emptyBoxCoord,false,resolve);
+                    this.emptyBoxesCoordArr[i] = oldBottomBoxCoord;
 
-            } else if (this.isFooterBox(emptyBoxCoord.coordOnField)) {
-                let baseBox = this.getBaseBox(emptyBoxCoord.coordOnField);
-                let oldBaseBoxCoord = this.moveBox(baseBox,emptyBoxCoord,true);
-                this.emptyBoxesCoordArr[i] = oldBaseBoxCoord;
+                } else if (this.isFooterBox(emptyBoxCoord.coordOnField)) {
+                    let baseBox = this.getBaseBox(emptyBoxCoord.coordOnField);
+                    let oldBaseBoxCoord = this.moveBox(baseBox, emptyBoxCoord, true,resolve);
+                    this.emptyBoxesCoordArr[i] = oldBaseBoxCoord;
 
-                this.createBox(this.scene, oldBaseBoxCoord.x, oldBaseBoxCoord.y, 'boxes', getRandomBoxName(), false, oldBaseBoxCoord.coordOnField);
+                    this.createBox(this.scene, oldBaseBoxCoord.x, oldBaseBoxCoord.y, 'boxes', getRandomBoxName(), false, oldBaseBoxCoord.coordOnField);
 
-            }
+                }
 
+            });
         });
-
-        setTimeout(()=>{
+        promise.then(()=>{
             this.checkEmptyBoxesCoordArr();
-        },200);
+        });
     }
 
-    moveBox(box,emptyBoxCoord,visible = false){
+    moveBox(box,emptyBoxCoord,visible = false,resolve){
         let oldBoxCoord = {
             coordOnField: box.coordOnField,
             x: box.x,
@@ -140,29 +151,29 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         if(visible){
             box.setVisible(true);
         }
-        box.move(emptyBoxCoord.x, emptyBoxCoord.y);
-        return oldBoxCoord;
-
+            box.move(emptyBoxCoord.x, emptyBoxCoord.y,resolve);
+            return oldBoxCoord;
     }
 
     checkEmptyBoxesCoordArr(){
-        let startRearrangingBoxes = false;
+        let start = false;
         this.emptyBoxesCoordArr.forEach((emptyBoxCoord)=>{
 
             let typeBox = this.getCoordInField(emptyBoxCoord.coordOnField).type;
-            if (typeBox === "tail") startRearrangingBoxes = true;
+            if (typeBox === "tail") start = true;
 
         });
-        if(startRearrangingBoxes) {
+        this.startOrFinishRearrangingBoxes(start)
+    }
+    startOrFinishRearrangingBoxes(start){
+        if(start) {
             this.rearrangingBoxes()
         }else{
-
             this.addHandler();
             this.emptyBoxesCoordArr = [];
-            this.resolvePromiseBoxHandler();
+            this.resolveEndRearrangingBoxes();
         };
     }
-
     sortEmptyBoxesCoordArr(){
         this.emptyBoxesCoordArr = this.emptyBoxesCoordArr.sort( (boxCoord, nextBoxCoord)=> {
             if (boxCoord.y > nextBoxCoord.y) return 1;
@@ -212,11 +223,11 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
         });
 
     }
-    checkPossibilityMoveGame(){
+    checkImpossibilityMoveGame(){
         let boxesArr = this.getChildren();
         let impossibilityMoveGame = true;
-        boxesArr.forEach((targetBox)=>{
-            if(targetBox.coordOnField) {
+        for(let i = 0; i < boxesArr.length; i++){
+                let targetBox = boxesArr[i];
                 let typeTargetBox = this.getCoordInField(targetBox.coordOnField).type;
                 if (typeTargetBox == 'tail') {
                     let aroundBoxesArr = this.getAroundBoxesCoord(targetBox);
@@ -227,8 +238,10 @@ export default class GroupBoxes extends Phaser.GameObjects.Group {
                         }
                     });
                 }
-            }
-        });
+                if(!impossibilityMoveGame){
+                    return impossibilityMoveGame;
+                };
+        }
          return impossibilityMoveGame;
     }
 }

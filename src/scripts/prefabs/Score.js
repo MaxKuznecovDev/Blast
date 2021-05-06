@@ -17,14 +17,13 @@ export default class Score extends Phaser.GameObjects.Sprite {
 
         this.addPointHandler();
         this.addMinusStepHandler();
+        this.addShakeHandler();
 
 
     }
     setConfig(){
         this.baseStepCount = this.scoreConfig.stepCount;
         this.baseTargetScore = this.scoreConfig.targetScore;
-        this.baseX = this.scoreConfig.x;
-        this.baseY = this.scoreConfig.y;
     }
     setScore(stepCount,targetScore,playerScore,shuffleCount){
 
@@ -77,6 +76,12 @@ export default class Score extends Phaser.GameObjects.Sprite {
             this.checkScore();
         },this);
     }
+    addShakeHandler(){
+        this.scene.events.on('shake',()=>{
+            this.shuffleHandler();
+            this.checkScore();
+        },this);
+    }
 
     createText(x,y,text,style){
         return this.scene.add.text( x , y , text, style);
@@ -108,7 +113,7 @@ export default class Score extends Phaser.GameObjects.Sprite {
         }else if(this.scoreGame.stepCount === 0 && this.scoreGame.playerScore < this.scoreGame.targetScore ){
             this.setScore(this.baseStepCount,this.baseTargetScore,0);
             this.scene.scene.start('GameOverScene');
-        }else if(this.scoreGame.shuffleCount === 0 && this.groupBoxes.checkPossibilityMoveGame()){
+        }else if(this.scoreGame.shuffleCount === 0 && this.groupBoxes.checkImpossibilityMoveGame()){
             this.scene.scene.start('GameOverScene');
         }
 
@@ -124,6 +129,7 @@ export default class Score extends Phaser.GameObjects.Sprite {
                     this.scoreGame.shuffleCount,
                     this.scoreConfig.shuffleCountParam.styleText
                 );
+                this.checkScore();
             }
 
     }

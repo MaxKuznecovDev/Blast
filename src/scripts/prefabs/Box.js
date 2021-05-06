@@ -18,13 +18,17 @@ export default class Box extends Phaser.Physics.Arcade.Sprite {
         this.body.enable = true;
         this.setVisible(visible);
     }
-    move(x,y){
+    move(x,y,resolve){
+        let resolvePromise = ()=> {
+            resolve();
+        };
         this.scene.tweens.add({
             targets:this,
             x:x,
             y:y,
-            ease:'Liner',
-            duration:120
+            ease:'Power0',
+            duration:500,
+            onComplete:resolvePromise
         });
     }
 
