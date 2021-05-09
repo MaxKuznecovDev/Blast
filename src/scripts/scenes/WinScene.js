@@ -1,7 +1,8 @@
 import Phaser from "phaser";
-import Button from "../prefabs/Button";
+import ButtonView from "../views/ButtonView";
 import winSceneConfig from "../config/winSceneConfig";
 import resetButtonConfig from "../config/resetButtonConfig";
+import ResetButtonController from "../Controller/ResetButtonController";
 
 export default class WinScene extends Phaser.Scene {
     constructor() {
@@ -35,10 +36,8 @@ export default class WinScene extends Phaser.Scene {
         );
     }
     createResetButton(){
-        this.resetButton = Button.generate(this,resetButtonConfig);
+        this.resetButton = ButtonView.generate(this,resetButtonConfig);
+        new ResetButtonController(this,this.resetButton);
 
-        this.resetButton.onPointerdownHandler(()=>{
-            this.scene.start("GameScene");
-        });
     }
 }

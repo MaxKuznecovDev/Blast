@@ -1,7 +1,8 @@
 import Phaser from "phaser";
-import Button from "../prefabs/Button";
 import gameOverSceneConfig from "../config/gameOverSceneConfig";
 import resetButtonConfig from "../config/resetButtonConfig";
+import ButtonView from "../views/ButtonView";
+import ResetButtonController from "../Controller/ResetButtonController";
 
 
 
@@ -38,9 +39,8 @@ export default class GameOverScene extends Phaser.Scene {
         );
     }
     createResetButton(){
-        this.resetButton = Button.generate(this,resetButtonConfig);
-        this.resetButton.onPointerdownHandler(()=>{
-            this.scene.start("GameScene");
-        });
+        this.resetButton = ButtonView.generate(this,resetButtonConfig);
+        new ResetButtonController(this,this.resetButton);
+
     }
 }

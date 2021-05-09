@@ -1,6 +1,6 @@
-export default class Button extends Phaser.GameObjects.Sprite{
+export default class ButtonView extends Phaser.GameObjects.Sprite{
     static generate(scene,buttonConfig){
-        return new Button(scene,buttonConfig);
+        return new ButtonView(scene,buttonConfig);
     }
     constructor(scene,buttonConfig) {
         super(scene,buttonConfig.x, buttonConfig.y, buttonConfig.name,buttonConfig.frame);
@@ -15,11 +15,7 @@ export default class Button extends Phaser.GameObjects.Sprite{
     createText(textButton){
         return this.scene.add.text( textButton.x, textButton.y, textButton.text, textButton.style);
     }
-    onPointerdownHandler(callback,cont){
-        this.on('pointerdown',callback,cont);
-    }
-    offPointerdownHandler(){
-        this.off('pointerdown');
-    }
+
+
 
 }
