@@ -70,6 +70,9 @@ export default class Box extends Phaser.GameObjects.Sprite {
             fire.destroy();
         });
     }
+    addHandler(callback){
+        this.on('pointerdown',callback)
+    }
 
 
 

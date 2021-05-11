@@ -7,11 +7,10 @@ export default class GroupBoxesModel {
 
     }
 
-    boxHandler(box){
-        box.on('pointerdown',()=>{
-           let promiseRemoveAroundBoxes = new Promise(promiseRemoveAroundBoxesFunc.bind(this));
-           promiseRemoveAroundBoxes.then(resolveRemoveAroundBoxesFunc.bind(this) );
-        });
+    boxHandlerLogic(box){
+        this.controller.boxHandler(box,()=>{
+            let promiseRemoveAroundBoxes = new Promise(promiseRemoveAroundBoxesFunc.bind(this));
+            promiseRemoveAroundBoxes.then(resolveRemoveAroundBoxesFunc.bind(this))});
 
         function promiseRemoveAroundBoxesFunc(resolve) {
             this.resolveRemoveAroundBoxes = resolve;
@@ -222,4 +221,6 @@ export default class GroupBoxesModel {
         }
 
     }
+
+
 }

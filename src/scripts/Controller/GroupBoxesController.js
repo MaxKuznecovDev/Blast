@@ -11,11 +11,6 @@ export default class GroupBoxesController {
         this.addCheckMoveGameHandler();
     }
 
-    addHandlerOnBox(){
-        for (let key in this.groupBoxesView.boxesObj) {
-            this.groupBoxesModel.boxHandler(this.groupBoxesView.boxesObj[key]);
-        }
-    }
 
     deleteBox(box){
         this.groupBoxesView.deleteBox(box);
@@ -44,9 +39,11 @@ export default class GroupBoxesController {
     }
     addHandlerOnBox(){
         for (let key in this.groupBoxesView.boxesObj) {
-            this.groupBoxesModel.boxHandler(this.groupBoxesView.boxesObj[key]);
+            this.groupBoxesModel.boxHandlerLogic(this.groupBoxesView.boxesObj[key]);
         }
-
+    }
+    boxHandler(box,callback){
+        box.addHandler(callback);
     }
     shuffleBoxes(){
         let keysArr = Object.keys(this.groupBoxesView.boxesObj);
