@@ -90,6 +90,9 @@ export default class GroupBoxesController {
             }
         },this);
     }
+    createBoxFire(box){
+        box.createFire();
+    }
     addShuffleHandler(){
         this.scene.events.emit("addShuffleHandler");
     }

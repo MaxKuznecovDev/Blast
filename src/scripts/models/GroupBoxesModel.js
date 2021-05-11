@@ -48,7 +48,7 @@ export default class GroupBoxesModel {
                 if (targetBox.name === nextBox.name) {
 
                     this.addEmptyBoxesCoordInArr(nextBox);
-                    nextBox.createFire();
+                    this.controller.createBoxFire(nextBox);
                     this.controller.addPoint();
                     this.removeBox(nextBox);
                     this.callbackArr.push(1);
