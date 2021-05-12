@@ -10,6 +10,7 @@ export default class GroupBoxesView {
         this.boxesObj = {};
     }
     createBoxInGroup(fieldmap,fieldConfig){
+        this.fieldmap = fieldmap;
         fieldmap.findObject("tail",(tail)=>{
             let tailCoordX = tail.x + fieldConfig.x;
             let tailCoordY = tail.y + fieldConfig.y;

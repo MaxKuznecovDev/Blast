@@ -14,7 +14,7 @@ export default class GroupBoxesModel {
 
         function promiseRemoveAroundBoxesFunc(resolve) {
             this.resolveRemoveAroundBoxes = resolve;
-            this.callbackArr = [];
+            this.countCallback = 0;
             this.removeAroundBoxes(box);
         }
         function resolveRemoveAroundBoxesFunc() {
@@ -25,45 +25,97 @@ export default class GroupBoxesModel {
         function promiseRearrangingBoxesFunc(resolve) {
             this.resolveEndRearrangingBoxes = resolve;
             this.deleteHandler();
+            this.checkAdditionalModules()
             this.rearrangingBoxes();
         }
         function resolveRearrangingBoxesFunc() {
             while (this.controller.checkImpossibilityMoveGame()) {
                 this.controller.shake()
             }
+            this.targetBox = false;
              this.controller.minusStep();
         }
     }
 
 
     removeAroundBoxes(targetBox){
-
-        let aroundBoxesCoordArr = this.getAroundBoxesCoord(targetBox);
-
-        aroundBoxesCoordArr.forEach((adjacentBoxCoord) => {
+       let boxesCoordArr = this.getBoxesCoord(targetBox);
+        boxesCoordArr.forEach((adjacentBoxCoord) => {
             let nextBox = this.controller.getMatchingBox(adjacentBoxCoord);
-
-            if (nextBox) {
+            if(nextBox && this.superBoxModule){
+                this.removeBoxOperations(nextBox,this.controller.getAddPointForSuperBox());
+            }else if (nextBox) {
                 if (targetBox.name === nextBox.name) {
 
-                    this.addEmptyBoxesCoordInArr(nextBox);
-                    this.controller.createBoxFire(nextBox);
-                    this.controller.addPoint();
-                    this.removeBox(nextBox);
-                    this.callbackArr.push(1);
+                    this.removeBoxOperations(nextBox);
+                    this.countCallback++;
                     this.removeAroundBoxes(nextBox);
-                    this.callbackArr.pop();
+                    this.countCallback--;
 
-                    if(this.callbackArr.length === 0){
+                    if(this.countCallback === 0){
                         this.resolveRemoveAroundBoxes();
                     }
                 }
             }
 
         });
+        if(this.superBoxModule){
+            this.superBoxModule = false;
+            this.resolveRemoveAroundBoxes();
+        }
 
     }
 
+    removeBoxOperations(nextBox,addPoint = true){
+        this.addEmptyBoxesCoordInArr(nextBox);
+        this.controller.createBoxFire(nextBox);
+        if(addPoint){
+            this.controller.addPoint();
+        }
+        this.removeBox(nextBox);
+    }
+
+    getBoxesCoord(targetBox){
+        let boxesCoordArr;
+        if(!this.targetBox){
+            this.targetBox = targetBox;
+            if(this.targetBox.name === "boom_box"){
+                boxesCoordArr = this.getLineBoxesCoord(targetBox);
+                this.targetBox = false;
+                this.superBoxModule = true;
+            }
+        }
+        if(!boxesCoordArr){
+            boxesCoordArr = this.getAroundBoxesCoord(targetBox);
+        }
+
+
+        return boxesCoordArr;
+    }
+    getLineBoxesCoord(targetBox){
+        let initialCoord = this.getCoordInField(targetBox.coordOnField);
+        let boxesCoordArr = [];
+        let fieldWidth = this.controller.getFieldWidth();
+        let fieldHeight = this.controller.getFieldHeight();
+        let superBoxConfig =  this.controller.getSuperBoxConfig();
+
+        if(superBoxConfig.boomX){
+            boxesCoordArr = boxesCoordArr.concat(this.getBoomXarr(initialCoord,fieldWidth));
+        }
+        if(superBoxConfig.boomY){
+            boxesCoordArr = boxesCoordArr.concat(this.getBoomYarr(initialCoord,fieldHeight));
+        }
+
+        if(superBoxConfig.boomAll) {
+            boxesCoordArr = boxesCoordArr.concat(this.getBoomAllArr(fieldWidth,fieldHeight));
+        }
+        let radius = superBoxConfig.radius;
+        if(radius){
+            boxesCoordArr = boxesCoordArr.concat(this.getBoomRadius(initialCoord, radius));
+        }
+
+        return boxesCoordArr;
+    }
     getAroundBoxesCoord(targetBox){
         let initialCoord = this.getCoordInField(targetBox.coordOnField);
         return  [
@@ -221,6 +273,68 @@ export default class GroupBoxesModel {
         }
 
     }
+    checkAdditionalModules(){
+        let countBoxesForActivation = this.controller.getCountBoxesForActivation();
 
+        if(this.emptyBoxesCoordArr.length >= countBoxesForActivation && this.targetBox ){
+            this.superBox();
+        }
+    }
+    superBox(){
+        this.emptyBoxesCoordArr.forEach((emptyBoxCoord, i)=>{
+            if(emptyBoxCoord.coordOnField === this.targetBox.coordOnField){
+                this.emptyBoxesCoordArr.splice(i, 1);
+                let boxData = {
+                    x: this.targetBox.x,
+                    y: this.targetBox.y,
+                    name: 'boxes',
+                    frame: "boom_box",
+                    visible: true,
+                    coordOnField: this.targetBox.coordOnField
+
+                };
+
+                this.controller.createBox(boxData);
+                this.targetBox = false;
+
+            }
+        });
+
+    }
+    getBoomXarr(initialCoord,fieldWidth){
+        let boxesCoordArr = [];
+        for(let i = 0; i < fieldWidth; i++){
+            boxesCoordArr.push(`tail_x${i}_y${initialCoord.y}`);
+        }
+        return boxesCoordArr;
+    }
+    getBoomYarr(initialCoord,fieldHeight){
+        let boxesCoordArr = [];
+        for(let i = 0; i < fieldHeight; i++){
+            boxesCoordArr.push(`tail_x${initialCoord.x}_y${i}`);
+        }
+        return boxesCoordArr;
+    }
+    getBoomAllArr(fieldWidth,fieldHeight){
+        let boxesCoordArr = [];
+        for (let i = 0; i < fieldWidth; i++) {
+            for (let j = 0; j < fieldHeight; j++) {
+                boxesCoordArr.push(`tail_x${i}_y${j}`);
+            }
+        }
+        return boxesCoordArr;
+    }
+    getBoomRadius(initialCoord, radius){
+        let boxesCoordArr = [];
+        let radiusX = Number(initialCoord.x) + radius;
+        let radiusY = Number(initialCoord.y) + radius;
+        for (let i = initialCoord.x - radius; i <= radiusX; i++) {
+            for (let j = initialCoord.y - radius; j <= radiusY ; j++) {
+                boxesCoordArr.push(`tail_x${i}_y${j}`);
+            }
+        }
+
+        return boxesCoordArr;
+    }
 
 }

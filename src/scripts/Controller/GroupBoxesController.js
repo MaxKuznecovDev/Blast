@@ -1,5 +1,5 @@
 import GroupBoxesModel from "../models/GroupBoxesModel";
-
+import additionalModulesConfig from "../config/additionalModulesConfig";
 
 export default class GroupBoxesController {
     constructor(scene, groupBoxesView) {
@@ -109,5 +109,20 @@ export default class GroupBoxesController {
         this.scene.events.on('shakeGroupBoxes',()=>{
             this.shuffleBoxes();
         },this);
+    }
+    getFieldWidth(){
+        return this.groupBoxesView.fieldmap.width;
+    }
+    getFieldHeight(){
+        return this.groupBoxesView.fieldmap.height;
+    }
+    getSuperBoxConfig(){
+        return additionalModulesConfig.superBox;
+    }
+    getCountBoxesForActivation(){
+        return this.getSuperBoxConfig().countBoxesForActivation;
+    }
+    getAddPointForSuperBox(){
+        return this.getSuperBoxConfig().addPoint;
     }
 }

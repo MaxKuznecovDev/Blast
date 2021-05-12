@@ -22,6 +22,7 @@ export default class FieldView{
     }
     createLayer(){
         this.fieldmap.createLayer('tilemap',this.fieldset,this.fieldConfig.x,this.fieldConfig.y);
+
     }
     getFieldmap(){
         return this.fieldmap;

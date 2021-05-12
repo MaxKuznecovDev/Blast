@@ -30,12 +30,12 @@ export default class GameScene extends Phaser.Scene{
         this.add.sprite(0,0,nameBgTexture).setOrigin(0);
     }
     createField(){
-        this.field = FieldView.generate(this,fieldConfig);
+        this.fieldView = FieldView.generate(this,fieldConfig);
 
     }
     createGroupBoxes(){
         this.groupBoxesView = GroupBoxesView.generate(this);
-        this.groupBoxesView.createBoxInGroup(this.field.getFieldmap(),fieldConfig);
+        this.groupBoxesView.createBoxInGroup(this.fieldView.getFieldmap(),fieldConfig);
         this.groupBoxesController = new GroupBoxesController(this,this.groupBoxesView);
     }
     createPanelScore(){
